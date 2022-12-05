@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/Gerardo-cmd/AstroDart#readme",
   "dependencies": {
-    "create-react-app": "^5.0.1"
+    "create-react-app": "^5.0.1",
+    "plaid-threads": "^11.5.0",
+    "react-plaid-link": "^3.3.2"
   }
 }

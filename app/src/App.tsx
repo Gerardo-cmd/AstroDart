@@ -5,6 +5,10 @@ import { css } from '@emotion/react'
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import LoginPage from './pages/LoginPage';
 import Networth from './pages/Networth';
+import Spending from './pages/Spending';
+import Checklist from './pages/Checklist';
+import ChecklistEdit from './pages/ChecklistEdit';
+
 
 import {
   BrowserRouter,
@@ -25,6 +29,9 @@ const theme = createTheme({
     body1: {
       color: '#e040fb'
     },
+    body2: {
+      color: '#e040fb'
+    },
     h1: {
       color: '#7c4dff'
     }, 
@@ -42,12 +49,12 @@ const styles = {
     display: 'flex',
     flexWrap: 'wrap',
     background: '#e8eaf6',
-    color: 'white',
+    color: 'black',
     minHeight: '100vh'
   }),
-}
+};
 
-const App = () => {
+const App: React.FC = () => {
   return (
     <ThemeProvider theme={theme}>
       <div css={styles.basicLayout} className="App">
@@ -56,8 +63,10 @@ const App = () => {
             <Route path="/">
               <Route index element={<LoginPage />} />
               <Route path="networth" element={<Networth />} />
+              <Route path="spending" element={<Spending />} />
+              <Route path="checklist" element={<Checklist />} />
+              <Route path="checklist/edit" element={<ChecklistEdit />} />
             </Route>
-            {/* <Route path="contact-us" element={<Contact />} /> */}
           </Routes>
         </BrowserRouter>
       </div>
