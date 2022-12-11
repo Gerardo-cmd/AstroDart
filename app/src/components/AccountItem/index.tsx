@@ -10,7 +10,7 @@ type Props = {
 
 const styles = {
   paper: css({
-    border: '3px solid #7c4dff',
+    border: '1px solid #7c4dff',
     background: 'white',
     padding: '10px',
     marginBottom: '10px'

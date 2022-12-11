@@ -8,10 +8,8 @@ import Context from "../../context";
 
 import styles from "./index.module.scss";
 
-const Header = () => {
+const Header: React.FC = () => {
   const {
-    itemId,
-    accessToken,
     linkToken,
     linkSuccess,
     isItemAccess,
@@ -56,6 +54,11 @@ const Header = () => {
           )}
         </>
       }
+      {linkSuccess && 
+        <div className={styles.linkButton}>
+          <Link />
+        </div>
+      }
       <>
         {isPaymentInitiation ? (
           <>
@@ -79,14 +82,15 @@ const Header = () => {
         </>
         ) : /* If not using the payment_initiation product, show the item_id and access_token information */ (
           <>
-          {!isItemAccess &&
-            <h4 className={styles.subtitle}>
-              <Callout warning>
-                Something went wrong in the server and we were unable to link account. Please try again later.
-              </Callout>
-            </h4>
-          }
-        </>
+            {!isItemAccess &&
+              <h4 className={styles.subtitle}>
+                <Callout warning>
+                  Something went wrong in the server and we were unable to link account. Please try again later.
+                </Callout>
+              </h4>
+            }
+            
+          </>
         )}
       </>
     </div>

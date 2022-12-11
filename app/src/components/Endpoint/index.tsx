@@ -38,8 +38,6 @@ const Endpoint = (props: Props) => {
       setIsLoading(false);
       return;
     }
-    console.log("Below si the data we got from the endpoint before we transform it...");
-    console.log(data);
     setTransformedData(props.transformData(data)); // transform data into proper format for each individual product
     if (data.pdf != null) {
       setPdf(data.pdf);

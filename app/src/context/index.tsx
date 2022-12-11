@@ -15,6 +15,7 @@ interface PlaidState {
   accessToken: string | null;
   items: any[];
   accounts: any[];
+  accountsArray: any[];
   itemId: string | null;
   isError: boolean;
   backend: boolean;
@@ -41,6 +42,7 @@ const initialState: PlaidState = {
   itemId: null,
   items: [],
   accounts: [],
+  accountsArray: [],
   isError: false,
   backend: true,
   products: ["transactions"],

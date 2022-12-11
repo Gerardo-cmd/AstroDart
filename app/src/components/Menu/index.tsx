@@ -18,7 +18,7 @@ import { useContext } from 'react';
 import Context from "../../context";
 
 type Props = {
-  page: string;
+  page?: string;
   /**
    * Injected by the documentation to work in an iframe.
    * You won't need it on your project.
@@ -27,7 +27,7 @@ type Props = {
 }
 
 const drawerWidth = 240;
-const navItems = ['Networth', 'Spending', 'Checklist', 'Logout'];
+const navItems = ['Networth', 'Spending', 'Checklist', 'Settings', 'Logout'];
 
 const Menu: React.FC<Props> = ({ page, window }) => {
   const { email, dispatch } = useContext(Context);
@@ -38,7 +38,6 @@ const Menu: React.FC<Props> = ({ page, window }) => {
     setMobileOpen(!mobileOpen);
   };
 
-  // TODO: SEE IF THIS WORKS!
   const logout = () => {
     dispatch({
       type: "RESET_STATE",
@@ -60,7 +59,7 @@ const Menu: React.FC<Props> = ({ page, window }) => {
           <ListItem key={item} disablePadding>
             <ListItemButton 
               sx={{ textAlign: 'center' }} 
-              disabled={page.toLowerCase() === item.toLowerCase()} 
+              disabled={page?.toLowerCase() === item.toLowerCase()} 
               onClick={item === "Logout" ? logout : () => navigate(`/${item.toLowerCase()}`)}
             >
               <ListItemText primary={item} />
@@ -97,7 +96,7 @@ const Menu: React.FC<Props> = ({ page, window }) => {
             {navItems.map((item) => (
               <Button 
                 key={item} 
-                disabled={page.toLowerCase() === item.toLowerCase()} 
+                disabled={page?.toLowerCase() === item.toLowerCase()} 
                 sx={{ color: '#fff' }} 
                 onClick={item === "Logout" ? logout : () => navigate(`/${item.toLowerCase()}`)}
               >

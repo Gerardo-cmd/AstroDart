@@ -3,7 +3,9 @@ import { usePlaidLink } from "react-plaid-link";
 import { Button } from "@mui/material";
 
 import Context from "../../context";
-import {Products} from "plaid";
+
+import { getAccountsArray } from "../../utils/DataHandlers"
+import updateItems from "../../utils/Endpoints/UpdateItems";
 
 const Link = () => {
   const { email, items, linkToken, isPaymentInitiation, dispatch } = useContext(Context);
@@ -12,8 +14,6 @@ const Link = () => {
     (public_token: string) => {
       // If the access_token is needed, send public_token to server
       const exchangePublicTokenForAccessToken = async () => {
-        console.log("The public_token we have is below...");
-        console.log(public_token);
         const headers = new Headers();
         headers.append('Content-Type', 'application/json');
         headers.append('Accept', 'application/json');
@@ -24,6 +24,7 @@ const Link = () => {
           headers: headers,
           body: JSON.stringify(accessTokenData),
         });
+
         if (!linkResponse.ok) {
           console.log("There was an error. the message is below...");
           const message = await linkResponse.json();
@@ -38,6 +39,7 @@ const Link = () => {
           });
           return;
         }
+
         const data = await linkResponse.json();
         dispatch({
           type: "SET_STATE",
@@ -56,58 +58,40 @@ const Link = () => {
         }
 
         const apiData = await response.json();
+        
+        // Get the accounts here for each item.
+        const accountsForThisItem = {};
+        apiData.accounts.forEach((account: any) => {
+          // @ts-ignore
+          accountsForThisItem[account.account_id] = {
+            M: {
+              accountId: { S: account.account_id},
+              name: { S: account.name},
+              balance: { N: account.balances.available.toString()},
+              item_id: { S: data.item_id }
+            }
+          };
+        });
 
         const newItems = items;
         // @ts-ignore
-        newItems[`${apiData.item.institution_id}`] = { M: {
-          institution_id: { S: apiData.item.institution_id},
-          access_token: {S: data.access_token},
-          item_id: {S: data.item_id}
-        }};
+        newItems[`${data.item_id}`] = {
+          M: {
+            institution_id: { S: apiData.item.institution_id},
+            access_token: {S: data.access_token},
+            item_id: {S: data.item_id},
+            accounts: {M: accountsForThisItem}
+          }
+        };
+
+        await updateItems(email, newItems);
+
         dispatch({
           type: "SET_STATE",
           state: {
-            items: newItems
+            items: newItems,
+            accountsArray: getAccountsArray(newItems),
           },
-        });
-
-        const itemsData = {
-          email,
-          items: newItems
-        }
-  
-        fetch('http://localhost:5000/api/items', {
-          method: 'POST',
-          mode: 'cors',
-          headers,
-          body: JSON.stringify(itemsData),
-        })
-        .then(response => {
-          if (response.status === 200) {
-            return response.json();
-          }
-          if (response.status === 400) {
-            throw new Error("400");
-          }
-          if (response.status === 500) {
-            throw new Error("500");
-          }
-          throw new Error("Unrecongized status code");
-        })
-        .then(data => {
-            console.log('Success:', data.msg);
-        })
-        .catch((error) => {
-          if (error === "400") {
-            console.log("Error: We don't have all the necessary information! We need both the email and the checklist.");
-            return;
-          }
-          if (error === "500") {
-            console.log("Error: Something went wrong in the server. Please try again later.");
-            return;
-          }
-          console.error('Error:', error);
-          return;
         });
       };
 

@@ -15,7 +15,7 @@ import {
 import { useNavigate } from 'react-router';
 import Context from "../context";
 import { getAccountsArray } from "../utils/DataHandlers";
-import loginUser from "../utils/Endpoints/LoginUser";
+import createUser from "../utils/Endpoints/CreateUser";
 
 const styles = {
   container: css({
@@ -42,31 +42,36 @@ const styles = {
   })
 };
 
-const LoginPage: React.FC = () => {
+const SignUpPage: React.FC = () => {
   const { dispatch } = useContext(Context);
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [confirmPassword, setConfirmPassword] = useState<string>("");
+  const [firstName, setFirstName] = useState<string>("");
+  const [lastName, setLastName] = useState<string>("");
   const [errorText, setErrorText] = useState<string>("");
-
-  // TODO: - Implement google charts in networth page (Pie chart)
-  // TODO: - Implement editing for checklist
-  // TODO: - Make Edit/Add Checklist a sticky footer
-  // TODO: - Do schema for spendng data in dynamodb
-  // TODO: - Create spending endpoints 
-  // TODO: - Implement the Spending page
-  // TODO: - Finish styling the app
-  // TODO: - Implement email authentication (SendGrid)
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     setLoading(true);
 
-    const data = await loginUser(email.trim().toLowerCase(), password.trim());
+    if (password.trim() !== confirmPassword.trim()) {
+      setErrorText("Passwords do not match");
+      setLoading(false);
+      return;
+    }
 
+    const data = await createUser(firstName.trim(), lastName.trim(), email.trim().toLowerCase(), password.trim(), confirmPassword.trim());
+
+    if (data === "Email taken") {
+      setErrorText("There is already an account registered with this email");
+      setLoading(false);
+      return;
+    }
     if (data === "400") {
-      setErrorText("Error: Need both email and password");
+      setErrorText("Error: Must fill out all fields");
       setLoading(false);
       return;
     }
@@ -75,12 +80,6 @@ const LoginPage: React.FC = () => {
       setLoading(false);
       return;
     }
-    if (data === "Invalid credentials") {
-      setErrorText("Invalid credentials");
-      setLoading(false);
-      return;
-    }
-
     dispatch({
       type: "SET_STATE",
       state: {
@@ -112,6 +111,34 @@ const LoginPage: React.FC = () => {
         >
           <div css={styles.input}>
             <TextField 
+              label="First Name" 
+              color="secondary" 
+              value={firstName} 
+              onChange={(e) => {
+                e.preventDefault();
+                setErrorText("");
+                setFirstName(e.target.value);
+              }}
+              id="first-name-input" 
+              name="firstname" 
+            />
+          </div>
+          <div css={styles.input}>
+            <TextField 
+              label="Last Name" 
+              color="secondary" 
+              value={lastName} 
+              onChange={(e) => {
+                e.preventDefault();
+                setErrorText("");
+                setLastName(e.target.value);
+              }}
+              id="last-name-input" 
+              name="lastname" 
+            />
+          </div>
+          <div css={styles.input}>
+            <TextField 
               label="Email" 
               color="secondary" 
               value={email} 
@@ -130,6 +157,7 @@ const LoginPage: React.FC = () => {
               type="password" 
               color="secondary" 
               value={password} 
+              error={errorText === "Passwords do not match"}
               onChange={(e) => {
                 e.preventDefault();
                 setErrorText("");
@@ -140,24 +168,38 @@ const LoginPage: React.FC = () => {
             />
           </div>
           <div css={styles.input}>
+            <TextField 
+              label="Confirm Password" 
+              type="password" 
+              color="secondary" 
+              value={confirmPassword} 
+              error={errorText === "Passwords do not match"}
+              onChange={(e) => {
+                e.preventDefault();
+                setErrorText("");
+                setConfirmPassword(e.target.value);
+              }}
+              id="confirm-password-input" 
+              name="confirmPassword" 
+            />
+          </div>
+          <div css={styles.input}>
             {loading ? 
               <CircularProgress /> 
               : 
               <Input 
                 type="submit" 
-                value="Login" 
-                disabled={email?.trim() === "" || password?.trim() === ""} 
+                value="Create Account" 
+                disabled={ 
+                  firstName?.trim() === "" || lastName?.trim() === "" || email?.trim() === "" || password?.trim() === "" || confirmPassword?.trim() === ""} 
               />
             }
           </div>
           <Typography css={styles.error}>{errorText}</Typography>
         </Box>
         <div>
-          <div>
-            <Typography>Don't have an account?</Typography>
-          </div>
           <div style={{margin: '8px'}}>
-            <Button variant="outlined" onClick={() => {navigate("/signup")}}>Sign Up</Button>
+            <Button variant="outlined" onClick={() => {navigate("/")}}>Go back</Button>
           </div>
         </div>
       </Paper>
@@ -165,4 +207,4 @@ const LoginPage: React.FC = () => {
   );
 };
 
-export default LoginPage;
+export default SignUpPage;

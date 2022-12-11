@@ -1,19 +1,17 @@
 /** @jsxImportSource @emotion/react */
 
 import { css } from "@emotion/react";
-import { useState, useEffect, useContext } from 'react';
+import { useContext } from 'react';
 import Menu from '../components/Menu';
 import Context from "../context";
 import ChecklistItem from "../components/ChecklistItem";
 import { PAGE_TYPES } from '../utils/types'
-import { Box, Button, Container, Paper, Typography } from '@mui/material';
+import { getUserChecklist } from "../utils/DataHandlers";
+import { Button, Typography } from '@mui/material';
 import { useNavigate } from 'react-router';
 
 const styles = {
   container: css({
-    display: 'flex',
-    justifyContent: 'center',
-    flexDirection: 'column',
     textAlign: 'center',
   }),
   header: css({
@@ -25,23 +23,11 @@ const styles = {
   }),
   input: css({
     margin: '50px 0px',
+  }),
+  noItemsMessage: css({
+    marginBottom: '12px'
   })
 };
-
-type Checklist = Map<string, Map<string, boolean>> | {};
-
-const getUserChecklist = (checklist: Checklist) => {
-  const checklistKeys = Object.keys(checklist);
-  const userChecklist: Array<Array<any>> = [];
-  let index = 0;
-  checklistKeys.forEach((key) => {
-    // @ts-ignore
-    userChecklist[index] = [key, checklist[key]];
-    index++;
-  });
-  return userChecklist;
-};
-
 
 const Checklist = () => {
   const navigate = useNavigate();
@@ -96,11 +82,11 @@ const Checklist = () => {
     })
     .catch((error) => {
       if (error === "400") {
-        console.log("Error: We don't have all the necessary information! We need both the email and the checklist.");
+        console.error("Error: We don't have all the necessary information! We need both the email and the checklist.");
         return;
       }
       if (error === "500") {
-        console.log("Error: Something went wrong in the server. Please try again later.");
+        console.error("Error: Something went wrong in the server. Please try again later.");
         return;
       }
       console.error('Error:', error);
@@ -111,19 +97,21 @@ const Checklist = () => {
   return (
     <>
       <Menu page={PAGE_TYPES.Checklist} />
-        <Container css={styles.container}>
-          {userChecklist?.map((item) => {
-            return (
-              <ChecklistItem 
-                key={`${item[0]}`} 
-                action={item[0]} 
-                done={item[1]["BOOL"]}
-                onChange={handleChange}
-              />
-            );
-          })}
-          <Button variant="contained" onClick={() => navigate("/checklist/edit")}>Edit</Button>
-        </Container>
+        <div className="container" css={styles.container}>
+            <Typography variant="h4" css={styles.header}>Checklist Items</Typography>
+            {!userChecklist.length && <Typography css={styles.noItemsMessage}>You don't have any items in your checklist. Click on the "Edit" button below to add some!</Typography>}
+            {userChecklist?.map((item) => {
+              return (
+                <ChecklistItem 
+                  key={`${item[0]}`} 
+                  action={item[0]} 
+                  done={item[1]["BOOL"]}
+                  onChange={handleChange}
+                />
+              );
+            })}
+            <Button variant="contained" onClick={() => navigate("/checklist/edit")}>Edit</Button>
+        </div>
     </>
   );
 };

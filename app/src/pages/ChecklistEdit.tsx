@@ -5,16 +5,15 @@ import { useState, useContext } from 'react';
 import Menu from '../components/Menu';
 import Context from "../context";
 import ChecklistItem from "../components/ChecklistItem";
-import { PAGE_TYPES } from '../utils/types'
+import { PAGE_TYPES } from '../utils/types';
+import updateChecklist from "../utils/Endpoints/UpdateChecklist";
+import { getUserChecklist } from "../utils/DataHandlers";
 import { 
-  Box, 
   Button, 
   Checkbox, 
-  Container, 
-  Input, 
   Paper, 
   TextField, 
-  Typography 
+  Typography
 } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -22,9 +21,6 @@ import { useNavigate } from 'react-router';
 
 const styles = {
   container: css({
-    display: 'flex',
-    justifyContent: 'center',
-    flexDirection: 'column',
     textAlign: 'center',
   }),
   header: css({
@@ -41,21 +37,6 @@ const styles = {
   })
 };
 
-type Checklist = Map<string, Map<string, boolean>> | {};
-
-const getUserChecklist = (checklist: Checklist) => {
-  const checklistKeys = Object.keys(checklist);
-  const userChecklist: Array<Array<any>> = [];
-  let index = 0;
-  checklistKeys.forEach((key) => {
-    // @ts-ignore
-    userChecklist[index] = [key, checklist[key]];
-    index++;
-  });
-  return userChecklist;
-};
-
-
 const Checklist = () => {
   const navigate = useNavigate();
   const { email, checklist, userToken, dispatch } = useContext(Context);
@@ -64,12 +45,11 @@ const Checklist = () => {
   const [hasError, setHasError] = useState<boolean>(false);
   const [errorText, setErrorText] = useState<string>("");
 
-  if(userToken === "") {
+  if (userToken === "") {
     navigate("/");
   }
 
   const userChecklist = getUserChecklist(checklist);
-
 
   const actionAlreadyExists = () => {
     // @ts-ignore
@@ -79,7 +59,7 @@ const Checklist = () => {
     return true;
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (newAction.trim().length === 0) {
       setErrorText("Action cannot be empty");
       setHasError(true);
@@ -90,9 +70,14 @@ const Checklist = () => {
       setHasError(true);
       return;
     }
+
     let newChecklist = checklist;
+    
     // @ts-ignore
     newChecklist[`${newAction.trim()}`] = { BOOL: false };
+
+    await updateChecklist(email, newChecklist);
+
     dispatch({
       type: "SET_STATE",
       state: {
@@ -100,53 +85,11 @@ const Checklist = () => {
       },
     });
 
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('Accept', 'application/json');
-
-    const data = {
-      email: email.trim().toLowerCase(),
-      checklist: newChecklist
-    };
-
-    fetch('http://localhost:5000/api/checklist', {
-      method: 'POST',
-      mode: 'cors',
-      headers: headers,
-      body: JSON.stringify(data),
-    })
-    .then(response => {
-      if (response.status === 200) {
-        return response.json();
-      }
-      if (response.status === 400) {
-        throw new Error("400");
-      }
-      if (response.status === 500) {
-        throw new Error("500");
-      }
-      throw new Error("Unrecongized status code");
-    })
-    .then(data => {
-        console.log('Success:', data.msg);
-        setIsEditing(false);
-    })
-    .catch((error) => {
-      setIsEditing(false);
-      if (error === "400") {
-        console.log("Error: We don't have all the necessary information! We need both the email and the checklist.");
-        return;
-      }
-      if (error === "500") {
-        console.log("Error: Something went wrong in the server. Please try again later.");
-        return;
-      }
-      console.error('Error:', error);
-      return;
-    });
+    setNewAction("");
+    setIsEditing(false);
   };
 
-  const handleDelete = (itemName: string) => {
+  const handleDelete = async (itemName: string) => {
     let newChecklist = {};
     const checklistKeys = Object.keys(checklist);
     checklistKeys.forEach((key) => {
@@ -155,56 +98,14 @@ const Checklist = () => {
         newChecklist[key] = checklist[key];
       }
     });
+
+    await updateChecklist(email, newChecklist);
+
     dispatch({
       type: "SET_STATE",
       state: {
         checklist: newChecklist
       },
-    });
-
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('Accept', 'application/json');
-
-    const data = {
-      email: email.trim().toLowerCase(),
-      checklist: newChecklist
-    };
-
-    fetch('http://localhost:5000/api/checklist', {
-      method: 'POST',
-      mode: 'cors',
-      headers: headers,
-      body: JSON.stringify(data),
-    })
-    .then(response => {
-      if (response.status === 200) {
-        return response.json();
-      }
-      if (response.status === 400) {
-        throw new Error("400");
-      }
-      if (response.status === 500) {
-        throw new Error("500");
-      }
-      throw new Error("Unrecongized status code");
-    })
-    .then(data => {
-        console.log('Success:', data.msg);
-        setIsEditing(false);
-    })
-    .catch((error) => {
-      setIsEditing(false);
-      if (error === "400") {
-        console.log("Error: We don't have all the necessary information! We need both the email and the checklist.");
-        return;
-      }
-      if (error === "500") {
-        console.log("Error: Something went wrong in the server. Please try again later.");
-        return;
-      }
-      console.error('Error:', error);
-      return;
     });
   };
 
@@ -215,7 +116,8 @@ const Checklist = () => {
   return (
     <>
       <Menu page={PAGE_TYPES.Checklist} />
-      <Container css={styles.container}>
+      <div className="container" css={styles.container}>
+        <Typography variant="h4" css={styles.header}>Editing Checklist Items</Typography>
         {userChecklist?.map((item) => {
           return (
             <ChecklistItem 
@@ -258,8 +160,9 @@ const Checklist = () => {
         }
         <Button variant="contained" disabled={isEditing} onClick={() => setIsEditing(true)}>Add</Button>
         <br />
+        <br />
         <Button variant="contained" onClick={handleExit}>Exit</Button>
-      </Container>
+      </div>
     </>
   );
 };

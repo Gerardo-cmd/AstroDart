@@ -16,7 +16,7 @@ type Props = {
 
 const styles = {
   paper: css({
-    border: '3px solid #7c4dff',
+    border: '1px solid #7c4dff',
     background: 'white',
     padding: '10px',
     marginBottom: '10px'
@@ -51,7 +51,7 @@ const ChecklistItem: React.FC<Props> = ({
       <>
         <Paper className="row" css={styles.paper}>
           <Checkbox className="col-sm" checked={done} disabled={disabled} onChange={handleChange} />
-          <Typography variant="body2" className="col-sm">{action}<Button onClick={handleDelete}><DeleteIcon /></Button></Typography>
+          <Typography className="col-sm">{action}<Button onClick={handleDelete}><DeleteIcon /></Button></Typography>
           <div className="col-sm" />
         </Paper>
       </>
