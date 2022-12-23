@@ -2,6 +2,10 @@
 
 import { css } from "@emotion/react";
 import { useState, useContext } from 'react';
+import { useNavigate } from 'react-router';
+import CheckIcon from '@mui/icons-material/Check';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { useTheme } from '@mui/material/styles';
 import Menu from '../components/Menu';
 import Context from "../context";
 import ChecklistItem from "../components/ChecklistItem";
@@ -15,9 +19,6 @@ import {
   TextField, 
   Typography
 } from '@mui/material';
-import CheckIcon from '@mui/icons-material/Check';
-import DeleteIcon from '@mui/icons-material/Delete';
-import { useNavigate } from 'react-router';
 
 const styles = {
   container: css({
@@ -27,7 +28,7 @@ const styles = {
     marginBottom: '30px',
   }),
   paper: css({
-    border: '3px solid #7c4dff',
+    border: '0.5px solid black',
     background: 'white',
     padding: '10px',
     marginBottom: '10px'
@@ -116,7 +117,7 @@ const Checklist = () => {
   return (
     <>
       <Menu page={PAGE_TYPES.Checklist} />
-      <div className="container" css={styles.container}>
+      <div className="container-sm" css={styles.container}>
         <Typography variant="h4" css={styles.header}>Editing Checklist Items</Typography>
         {userChecklist?.map((item) => {
           return (

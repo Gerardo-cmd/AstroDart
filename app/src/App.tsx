@@ -3,6 +3,7 @@
 import React from 'react';
 import { css } from '@emotion/react'
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { Theme, useTheme } from "@mui/material"
 import LoginPage from './pages/LoginPage';
 import Networth from './pages/Networth';
 import Spending from './pages/Spending';
@@ -22,49 +23,56 @@ import {
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#7c4dff',
+      main: '#fffffd'
     },
     secondary: {
-      main: '#e040fb',
+      // main: '#FBF4E2'
+      main: '#f0ece7' 
     },
   },
   typography: {
     body1: {
-      color: '#e040fb'
+      // color: '#024bc2'
+      color: 'black' 
     },
     body2: {
-      color: '#e040fb'
+      color: 'black'
     },
     h1: {
-      color: '#7c4dff'
+      color: 'black'
     }, 
     h2: {
-      color: '#7c4dff'
+      color: 'black'
     },
     h3: {
-      color: '#7c4dff'
+      color: 'black'
     },
     h4: {
-      color: '#7c4dff'
+      color: 'black'
     },
     h5: {
-      color: '#7c4dff'
-    }
+      color: 'black'
+    }, 
+    h6: {
+      color: 'black'
+    },
   }
 });
 
 const styles = {
-  basicLayout: css({
-    background: '#e8eaf6',
+  basicLayout: (theme: Theme) => css({
+    // background: '#e8eaf6',
+    background: theme.palette.secondary.main, 
     color: 'black',
     minHeight: '100vh'
   }),
 };
 
 const App: React.FC = () => {
+  // const theme = useTheme();
   return (
     <ThemeProvider theme={theme}>
-      <div css={styles.basicLayout} className="App">
+      <div css={styles.basicLayout(theme)} className="App">
         <BrowserRouter>
           <Routes>
             <Route path="/">

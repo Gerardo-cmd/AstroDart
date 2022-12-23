@@ -12,6 +12,7 @@ import {
   TextField,
   Typography
 } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import { useNavigate } from 'react-router';
 import Context from "../context";
 import { getAccountsArray } from "../utils/DataHandlers";
@@ -29,7 +30,7 @@ const styles = {
     marginBottom: '24px',
   }),
   paper: css({
-    border: '3px solid #7c4dff',
+    border: '0.5px solid black',
     background: 'white',
     padding: '24px',
     marginBottom: '24px'
@@ -199,7 +200,7 @@ const SignUpPage: React.FC = () => {
         </Box>
         <div>
           <div style={{margin: '8px'}}>
-            <Button variant="outlined" onClick={() => {navigate("/")}}>Go back</Button>
+            <Button variant="contained" onClick={() => {navigate("/")}}>Go back</Button>
           </div>
         </div>
       </Paper>

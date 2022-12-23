@@ -1,7 +1,8 @@
 /** @jsxImportSource @emotion/react */
 
 import { css } from "@emotion/react";
-import { useState, useContext } from 'react';
+import { useContext } from 'react';
+import { useTheme } from '@mui/material/styles';
 import Context from "../context";
 import Menu from '../components/Menu';
 import DeleteItemModal from "../components/DeleteItemModal";
@@ -35,7 +36,7 @@ const styles = {
 
 const DeleteItems: React.FC = () => {
   const navigate = useNavigate();
-  const { email, accountsArray, items, userToken, dispatch } = useContext(Context);
+  const { accountsArray, userToken } = useContext(Context);
 
   if (userToken === "") {
     navigate("/");
@@ -58,6 +59,7 @@ const DeleteItems: React.FC = () => {
                   accountId={account.accountId.S} 
                   accountName={account.name.S} 
                   accountBalance={account.balance.N}
+                  accountType={account.type.S}
                 />
               );
             })}

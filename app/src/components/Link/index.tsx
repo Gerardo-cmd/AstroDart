@@ -4,11 +4,21 @@ import { Button } from "@mui/material";
 
 import Context from "../../context";
 
-import { getAccountsArray } from "../../utils/DataHandlers"
+import { 
+  getAccountsArray,
+  getCashAccountsArray,
+  getCreditAccountsArray, 
+  getLoanAccountsArray, 
+  getInvestmentAccountsArray
+ } from "../../utils/DataHandlers"
 import updateItems from "../../utils/Endpoints/UpdateItems";
+import getAccountAuth from "../../utils/Endpoints/GetAccountAuth";
+import getLiabilities from "../../utils/Endpoints/GetLiabilities";
+import getInvestments from "../../utils/Endpoints/GetInvestments";
+import getTransactions from "../../utils/Endpoints/GetTransactions";
 
 const Link = () => {
-  const { email, items, linkToken, isPaymentInitiation, dispatch } = useContext(Context);
+  const { email, items, linkToken, currentAccountType, dispatch } = useContext(Context);
 
   const onSuccess = React.useCallback(
     (public_token: string) => {
@@ -26,9 +36,8 @@ const Link = () => {
         });
 
         if (!linkResponse.ok) {
-          console.log("There was an error. the message is below...");
           const message = await linkResponse.json();
-          console.log(message);
+          console.error(message);
           dispatch({
             type: "SET_STATE",
             state: {
@@ -49,26 +58,29 @@ const Link = () => {
             isItemAccess: true,
           },
         });
-        
-        const authBody = { accessToken: data.access_token };
-        const response = await fetch(`http://localhost:5000/api/auth`, { method: "POST", mode: "cors", headers, body: JSON.stringify(authBody) })
-        
-        if (!response.ok) {
-          // Do something
-        }
 
-        const apiData = await response.json();
+        let balanceData = null;
+        if (currentAccountType === "auth") {
+          balanceData = await getAccountAuth(data.access_token);
+        }
+        else if (currentAccountType === "liabilities") {
+          balanceData = await getLiabilities(data.access_token);
+        }
+        else if (currentAccountType === "investments") {
+          balanceData = await getInvestments(data.access_token);
+        }
         
         // Get the accounts here for each item.
         const accountsForThisItem = {};
-        apiData.accounts.forEach((account: any) => {
+        balanceData.accounts.forEach((account: any) => {
           // @ts-ignore
           accountsForThisItem[account.account_id] = {
             M: {
               accountId: { S: account.account_id},
               name: { S: account.name},
-              balance: { N: account.balances.available.toString()},
-              item_id: { S: data.item_id }
+              balance: { N: account.balances.current.toString()},
+              item_id: { S: data.item_id },
+              type: { S: account.type}
             }
           };
         });
@@ -77,30 +89,31 @@ const Link = () => {
         // @ts-ignore
         newItems[`${data.item_id}`] = {
           M: {
-            institution_id: { S: apiData.item.institution_id},
-            access_token: {S: data.access_token},
-            item_id: {S: data.item_id},
-            accounts: {M: accountsForThisItem}
+            institution_id: { S: balanceData.item.institution_id },
+            access_token: { S: data.access_token },
+            item_id: { S: data.item_id },
+            accounts: { M: accountsForThisItem },
+            product: { S: balanceData.item.products[0] }
           }
         };
 
         await updateItems(email, newItems);
-
+        const transactionsData: any[] = await getTransactions(email.trim().toLowerCase());
         dispatch({
           type: "SET_STATE",
           state: {
-            items: newItems,
-            accountsArray: getAccountsArray(newItems),
+            items: newItems, 
+            accountsArray: getAccountsArray(newItems), 
+            cashAccountsArray: getCashAccountsArray(newItems), 
+            creditAccountsArray: getCreditAccountsArray(newItems), 
+            loanAccountsArray: getLoanAccountsArray(newItems), 
+            investmentAccountsArray: getInvestmentAccountsArray(newItems), 
+            transactions: transactionsData 
           },
         });
       };
 
-      // 'payment_initiation' products do not require the public_token to be exchanged for an access_token.
-      if (isPaymentInitiation){
-        dispatch({ type: "SET_STATE", state: { isItemAccess: false } });
-      } else {
-        exchangePublicTokenForAccessToken();
-      }
+      exchangePublicTokenForAccessToken();
 
       dispatch({ type: "SET_STATE", state: { linkSuccess: true } });
       window.history.pushState("", "", "/");

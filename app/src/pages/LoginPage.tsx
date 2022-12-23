@@ -10,12 +10,21 @@ import {
   Input, 
   Paper,
   TextField,
+  Theme,
   Typography
 } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import { useNavigate } from 'react-router';
 import Context from "../context";
-import { getAccountsArray } from "../utils/DataHandlers";
+import { 
+  getAccountsArray, 
+  getCashAccountsArray, 
+  getCreditAccountsArray, 
+  getLoanAccountsArray, 
+  getInvestmentAccountsArray 
+} from "../utils/DataHandlers";
 import loginUser from "../utils/Endpoints/LoginUser";
+import getTransactions from "../utils/Endpoints/GetTransactions";
 
 const styles = {
   container: css({
@@ -28,8 +37,8 @@ const styles = {
   header: css({
     marginBottom: '24px',
   }),
-  paper: css({
-    border: '3px solid #7c4dff',
+  paper:  () => css({
+    border: '0.5px solid black',
     background: 'white',
     padding: '24px',
     marginBottom: '24px'
@@ -43,6 +52,7 @@ const styles = {
 };
 
 const LoginPage: React.FC = () => {
+  const theme = useTheme();
   const { dispatch } = useContext(Context);
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
@@ -50,14 +60,16 @@ const LoginPage: React.FC = () => {
   const [password, setPassword] = useState<string>("");
   const [errorText, setErrorText] = useState<string>("");
 
-  // TODO: - Implement google charts in networth page (Pie chart)
-  // TODO: - Implement editing for checklist
-  // TODO: - Make Edit/Add Checklist a sticky footer
-  // TODO: - Do schema for spendng data in dynamodb
-  // TODO: - Create spending endpoints 
-  // TODO: - Implement the Spending page
-  // TODO: - Finish styling the app
-  // TODO: - Implement email authentication (SendGrid)
+  // TODO: If the user links a duplicate bank account, notify and nothing happens (Need to add account numer and routing number for that?)
+  // TODO: Have the google bar chart compare monthly spending up to 2 (?) prior months 
+  // TODO: Find a way to make the colors match between pie chart and bar chart
+  // TODO: Refactor endpoints to be more organized in BE 
+  // TODO: Implement editing for an existing checklist item
+  // TODO: Make Edit/Add Checklist a sticky footer
+  // TODO: Finish styling the app
+  // TODO: Add tanstack
+  // TODO: Make BE serverless with lambda functons
+  // OPTIONAL: Implement email authentication (SendGrid)
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -81,6 +93,7 @@ const LoginPage: React.FC = () => {
       return;
     }
 
+    const transactionsData: any[] = await getTransactions(email.trim().toLowerCase());
     dispatch({
       type: "SET_STATE",
       state: {
@@ -90,7 +103,14 @@ const LoginPage: React.FC = () => {
         lastName: data.lastName,
         checklist: data.checklist,
         items: data.items,
+        networthHistory: data.networthHistory,
         accountsArray: getAccountsArray(data.items),
+        cashAccountsArray: getCashAccountsArray(data.items),
+        creditAccountsArray: getCreditAccountsArray(data.items),
+        loanAccountsArray: getLoanAccountsArray(data.items),
+        investmentAccountsArray: getInvestmentAccountsArray(data.items), 
+        transactions: transactionsData, 
+        monthlySpending: data.monthlySpending 
       },
     });
     setLoading(false);
@@ -157,7 +177,7 @@ const LoginPage: React.FC = () => {
             <Typography>Don't have an account?</Typography>
           </div>
           <div style={{margin: '8px'}}>
-            <Button variant="outlined" onClick={() => {navigate("/signup")}}>Sign Up</Button>
+            <Button variant="contained" onClick={() => {navigate("/signup")}}>Sign Up</Button>
           </div>
         </div>
       </Paper>

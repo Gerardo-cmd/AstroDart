@@ -1,9 +1,10 @@
 /** @jsxImportSource @emotion/react */
 
 import { css } from "@emotion/react";
-import { useState, useEffect, useContext, useCallback } from 'react';
+import { useContext } from 'react';
 import { useNavigate } from "react-router-dom";
-import { Button } from '@mui/material';
+import { Button, Typography } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import Context from "../context";
 import Menu from '../components/Menu';
 import DeleteUserModal from "../components/DeleteUserModal";
@@ -11,7 +12,7 @@ import { PAGE_TYPES } from '../utils/types'
 
 const Settings = () => {
   const navigate = useNavigate();
-  const { accounts, email, items, userToken, dispatch } = useContext(Context);
+  const { userToken } = useContext(Context);
 
   if (userToken === "") {
     navigate("/");
@@ -25,12 +26,16 @@ const Settings = () => {
     container: css({
       textAlign: 'center'
     }),
+    header: css({
+      marginBottom: '30px',
+    }),
   };
 
   return (
     <>
       <Menu page={PAGE_TYPES.Settings} />
       <div className="container" css={styles.container}>
+        <Typography variant="h4" css={styles.header}>Settings</Typography>
         <div>
           <Button variant="contained" onClick={() => navigate("/deleteItems")}>Unlink Accounts</Button>
         </div>

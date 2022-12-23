@@ -2,13 +2,14 @@
 
 import { css } from "@emotion/react";
 import { useContext } from 'react';
+import { useNavigate } from 'react-router';
+import { Button, Typography } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import Menu from '../components/Menu';
 import Context from "../context";
 import ChecklistItem from "../components/ChecklistItem";
 import { PAGE_TYPES } from '../utils/types'
 import { getUserChecklist } from "../utils/DataHandlers";
-import { Button, Typography } from '@mui/material';
-import { useNavigate } from 'react-router';
 
 const styles = {
   container: css({
@@ -99,7 +100,7 @@ const Checklist = () => {
       <Menu page={PAGE_TYPES.Checklist} />
         <div className="container" css={styles.container}>
             <Typography variant="h4" css={styles.header}>Checklist Items</Typography>
-            {!userChecklist.length && <Typography css={styles.noItemsMessage}>You don't have any items in your checklist. Click on the "Edit" button below to add some!</Typography>}
+            {!userChecklist.length && <Typography css={styles.noItemsMessage}>You don't have any items in your checklist. Click on "Edit" below to add some!</Typography>}
             {userChecklist?.map((item) => {
               return (
                 <ChecklistItem 

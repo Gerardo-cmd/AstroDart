@@ -1,17 +1,23 @@
+/** @jsxImportSource @emotion/react */
+
+import { css } from "@emotion/react";
 import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Divider from '@mui/material/Divider';
-import Drawer from '@mui/material/Drawer';
-import IconButton from '@mui/material/IconButton';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
+import { 
+  AppBar, 
+  Box, 
+  Button, 
+  Divider, 
+  Drawer, 
+  IconButton, 
+  List, 
+  ListItem, 
+  ListItemButton, 
+  ListItemText, 
+  Toolbar, 
+  Typography 
+} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
+import { useTheme } from '@mui/material/styles';
 
 import { useNavigate } from "react-router-dom";
 import { useContext } from 'react';
@@ -30,6 +36,7 @@ const drawerWidth = 240;
 const navItems = ['Networth', 'Spending', 'Checklist', 'Settings', 'Logout'];
 
 const Menu: React.FC<Props> = ({ page, window }) => {
+  const theme = useTheme();
   const { email, dispatch } = useContext(Context);
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -49,8 +56,8 @@ const Menu: React.FC<Props> = ({ page, window }) => {
   };
 
   const drawer = (
-    <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
-      <Typography variant="h6" sx={{ my: 2 }}>
+    <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center', background: theme.palette.primary.main, minHeight: '100vh' }}>
+      <Typography variant="h5" sx={{ my: 2 }}>
         AstroDart
       </Typography>
       <Divider />
@@ -86,7 +93,7 @@ const Menu: React.FC<Props> = ({ page, window }) => {
             <MenuIcon />
           </IconButton>
           <Typography
-            variant="h6"
+            variant="h5"
             component="div"
             sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
           >
@@ -97,7 +104,7 @@ const Menu: React.FC<Props> = ({ page, window }) => {
               <Button 
                 key={item} 
                 disabled={page?.toLowerCase() === item.toLowerCase()} 
-                sx={{ color: '#fff' }} 
+                sx={{ color: 'black' }}
                 onClick={item === "Logout" ? logout : () => navigate(`/${item.toLowerCase()}`)}
               >
                 {item}

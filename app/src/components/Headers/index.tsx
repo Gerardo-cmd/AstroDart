@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 import Callout from "plaid-threads/Callout";
 import { Button } from "@mui/material";
-import InlineLink from "plaid-threads/InlineLink";
 
 import Link from "../Link";
 import Context from "../../context";
@@ -15,7 +14,6 @@ const Header: React.FC = () => {
     isItemAccess,
     backend,
     linkTokenError,
-    isPaymentInitiation,
   } = useContext(Context);
 
   return (
@@ -48,50 +46,25 @@ const Header: React.FC = () => {
               </Button>
             </div>
           ) : (
-            <div className={styles.linkButton}>
+            <div>
               <Link />
             </div>
           )}
         </>
       }
       {linkSuccess && 
-        <div className={styles.linkButton}>
+        <div>
           <Link />
         </div>
       }
       <>
-        {isPaymentInitiation ? (
-          <>
+        {!isItemAccess &&
           <h4 className={styles.subtitle}>
-            Congrats! Your payment is now confirmed.
-            <p/>
-            <Callout>
-              You can see information of all your payments in the{' '}
-              <InlineLink
-                  href="https://dashboard.plaid.com/activity/payments"
-                  target="_blank"
-              >
-                Payments Dashboard
-              </InlineLink>
-              .
+            <Callout warning>
+              Something went wrong in the server and we were unable to link account. Please try again later.
             </Callout>
           </h4>
-          <p className={styles.requests}>
-            Now that the 'payment_id' stored in your server, you can use it to access the payment information:
-          </p>
-        </>
-        ) : /* If not using the payment_initiation product, show the item_id and access_token information */ (
-          <>
-            {!isItemAccess &&
-              <h4 className={styles.subtitle}>
-                <Callout warning>
-                  Something went wrong in the server and we were unable to link account. Please try again later.
-                </Callout>
-              </h4>
-            }
-            
-          </>
-        )}
+        }
       </>
     </div>
   );

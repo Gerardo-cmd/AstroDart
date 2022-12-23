@@ -1,15 +1,14 @@
-const createLinkToken = async (userToken: string, isPaymentInitiation: boolean) => {
+const createLinkToken = async (userToken: string, type: string) => {
   const headers = new Headers();
   headers.append('Content-Type', 'application/json');
   headers.append('Accept', 'application/json');
 
-  const body = { userToken };
+  const body = { 
+    userToken,
+    type 
+  };
 
-  const path = isPaymentInitiation
-    ? "/create_link_token_for_payment"
-    : "/create_link_token";
-
-  const response = await fetch(`http://localhost:5000/api${path}`, {
+  const response = await fetch(`http://localhost:5000/api/create_link_token`, {
     method: "POST",
     mode: 'cors',
     headers: headers,

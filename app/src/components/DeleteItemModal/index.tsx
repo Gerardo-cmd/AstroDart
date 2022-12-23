@@ -11,7 +11,15 @@ import {
 
 import AccountItem from "../AccountItem";
 import updateItems from "../../utils/Endpoints/UpdateItems";
-import { getAccountsArray, unlinkAccount } from "../../utils/DataHandlers";
+import getTransactions from "../../utils/Endpoints/GetTransactions";
+import { 
+  getAccountsArray, 
+  getCashAccountsArray, 
+  getCreditAccountsArray, 
+  getLoanAccountsArray, 
+  getInvestmentAccountsArray, 
+  unlinkAccount 
+} from "../../utils/DataHandlers";
 
 type SimpleDialogProps = Props & {
   open: boolean;
@@ -23,6 +31,7 @@ type Props = {
   accountId: string;
   accountName: string;
   accountBalance: string;
+  accountType: string;
 }
 
 const styles = {
@@ -42,7 +51,7 @@ const styles = {
   })
 };
 
-const SimpleDialog: React.FC<SimpleDialogProps> = ({ itemId, accountId, accountName, accountBalance, onClose, open }) => {
+const SimpleDialog: React.FC<SimpleDialogProps> = ({ itemId, accountId, accountName, accountBalance, accountType, onClose, open }) => {
   const { email, items, dispatch } = useContext(Context);
 
   const handleClose = () => {
@@ -57,29 +66,34 @@ const SimpleDialog: React.FC<SimpleDialogProps> = ({ itemId, accountId, accountN
     }
     // Update the database with the new items
     await updateItems(email, newItems);
+    const transactionsData: any[] = await getTransactions(email.trim().toLowerCase()) ;
     // Dispatch the new items and the new accountsArray
     dispatch({
       type: "SET_STATE",
       state: {
         // @ts-ignore
-        items: newItems,
-        accountsArray: getAccountsArray(newItems),
+        items: newItems, 
+        accountsArray: getAccountsArray(newItems), 
+        cashAccountsArray: getCashAccountsArray(newItems), 
+        creditAccountsArray: getCreditAccountsArray(newItems), 
+        loanAccountsArray: getLoanAccountsArray(newItems), 
+        investmentAccountsArray: getInvestmentAccountsArray(newItems),
+        transactions: transactionsData 
       },
     });
-    // Close modal
     onClose();
     return;
   }
 
   return (
-    <Dialog css={styles.popupModal} onClose={handleClose} open={open}>
+    <Dialog css={styles.popupModal} disableScrollLock={true} onClose={handleClose} open={open}>
       <DialogTitle>You are about to unlink {accountName}. Are you sure? This cannot be undone.</DialogTitle>
       <Button color="error" onClick={handleDeletion}>Yes, I am sure</Button>
     </Dialog>
   );
 }
 
-const DeleteItemModal: React.FC<Props> = ({ itemId, accountId, accountName, accountBalance }) => {
+const DeleteItemModal: React.FC<Props> = ({ itemId, accountId, accountName, accountBalance, accountType }) => {
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -93,13 +107,14 @@ const DeleteItemModal: React.FC<Props> = ({ itemId, accountId, accountName, acco
   return (
     <div>
       <Button css={styles.unlinkButton} onClick={handleClickOpen}>
-        <AccountItem name={accountName} balance={accountBalance} />
+        <AccountItem name={accountName} balance={accountBalance} type={accountType} />
       </Button>
       <SimpleDialog
         itemId={itemId} 
         accountId={accountId} 
         accountName={accountName} 
         accountBalance={accountBalance} 
+        accountType={accountType}
         open={open}
         onClose={handleClose}
       />

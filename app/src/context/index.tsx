@@ -10,12 +10,19 @@ interface PlaidState {
   checklist: Checklist;
   linkSuccess: boolean;
   isItemAccess: boolean;
-  isPaymentInitiation: boolean;
   linkToken: string | null;
+  currentAccountType: string | null;
   accessToken: string | null;
   items: any[];
+  networthHistory: any[]
   accounts: any[];
   accountsArray: any[];
+  cashAccountsArray: any[];
+  creditAccountsArray: any[];
+  loanAccountsArray: any[];
+  investmentAccountsArray: any[];
+  transactions: any[];
+  monthlySpending: any[];
   itemId: string | null;
   isError: boolean;
   backend: boolean;
@@ -36,13 +43,20 @@ const initialState: PlaidState = {
   checklist: {},
   linkSuccess: false,
   isItemAccess: true,
-  isPaymentInitiation: false,
   linkToken: "", // Don't set to null or error message will show up briefly when site loads
+  currentAccountType: null,
   accessToken: null,
   itemId: null,
   items: [],
+  networthHistory: [],
   accounts: [],
   accountsArray: [],
+  cashAccountsArray: [],
+  creditAccountsArray: [],
+  loanAccountsArray: [],
+  investmentAccountsArray: [],
+  transactions: [], 
+  monthlySpending: [], 
   isError: false,
   backend: true,
   products: ["transactions"],

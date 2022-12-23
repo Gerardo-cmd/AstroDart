@@ -6,6 +6,8 @@
   flex-direction: column;
   margin: auto;
   margin-bottom: 2 * $unit;
+  justify-content: 'center';
+  text-align: 'center';
 }
 
 .title {
@@ -24,10 +26,6 @@
   width: 100%;
   font-size: 2 * $unit;
   margin: 2 * $unit 0;
-}
-
-.linkButton {
-  margin-top: 3 * $unit;
 }
 
 .itemAccessContainer {

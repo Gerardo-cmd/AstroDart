@@ -20,6 +20,106 @@ export const getAccountsArray = (newItems: any) => {
   return accountsArray;
 };
 
+export const getCashAccountsArray = (newItems: any) => {
+  const cashAccountsArray: Array<any> = [];
+
+  if (!newItems || Object.keys(newItems).length === 0) {
+    return cashAccountsArray;
+  }
+  
+  // @ts-ignore
+  const itemKeys = Object.keys(newItems);
+  
+  itemKeys.forEach((itemId) => {
+    // @ts-ignore
+    const accountKeys: Array<string> = Object.keys(newItems[itemId]?.M?.accounts?.M);
+    accountKeys.forEach((accountId) => {
+      
+      if (newItems[itemId].M.accounts.M[accountId]?.M.type.S === "depository") {
+        // @ts-ignore
+        cashAccountsArray.push(newItems[itemId].M.accounts.M[accountId]?.M);
+      }
+    });
+  });
+
+  return cashAccountsArray;
+};
+
+export const getCreditAccountsArray = (newItems: any) => {
+  const liabilityAccountsArray: Array<any> = [];
+
+  if (!newItems || Object.keys(newItems).length === 0) {
+    return liabilityAccountsArray;
+  }
+  
+  // @ts-ignore
+  const itemKeys = Object.keys(newItems);
+  
+  itemKeys.forEach((itemId) => {
+    // @ts-ignore
+    const accountKeys: Array<string> = Object.keys(newItems[itemId]?.M?.accounts?.M);
+    accountKeys.forEach((accountId) => {
+      
+      if (newItems[itemId].M.accounts.M[accountId]?.M.type.S === "credit") {
+        // @ts-ignore
+        liabilityAccountsArray.push(newItems[itemId].M.accounts.M[accountId]?.M);
+      }
+    });
+  });
+
+  return liabilityAccountsArray;
+};
+
+export const getLoanAccountsArray = (newItems: any) => {
+  const liabilityAccountsArray: Array<any> = [];
+
+  if (!newItems || Object.keys(newItems).length === 0) {
+    return liabilityAccountsArray;
+  }
+  
+  // @ts-ignore
+  const itemKeys = Object.keys(newItems);
+  
+  itemKeys.forEach((itemId) => {
+    // @ts-ignore
+    const accountKeys: Array<string> = Object.keys(newItems[itemId]?.M?.accounts?.M);
+    accountKeys.forEach((accountId) => {
+      
+      if (newItems[itemId].M.accounts.M[accountId]?.M.type.S === "loan") {
+        // @ts-ignore
+        liabilityAccountsArray.push(newItems[itemId].M.accounts.M[accountId]?.M);
+      }
+    });
+  });
+
+  return liabilityAccountsArray;
+};
+
+export const getInvestmentAccountsArray = (newItems: any) => {
+  const investmentAccountsArray: Array<any> = [];
+
+  if (!newItems || Object.keys(newItems).length === 0) {
+    return investmentAccountsArray;
+  }
+  
+  // @ts-ignore
+  const itemKeys = Object.keys(newItems);
+  
+  itemKeys.forEach((itemId) => {
+    // @ts-ignore
+    const accountKeys: Array<string> = Object.keys(newItems[itemId]?.M?.accounts?.M);
+    accountKeys.forEach((accountId) => {
+      
+      if (newItems[itemId].M.accounts.M[accountId]?.M.type.S === "investment") {
+        // @ts-ignore
+        investmentAccountsArray.push(newItems[itemId].M.accounts.M[accountId]?.M);
+      }
+    });
+  });
+
+  return investmentAccountsArray;
+};
+
 export const getUserChecklist = (checklist: Map<string, Map<string, boolean>> | {}) => {
   const checklistKeys = Object.keys(checklist);
   const userChecklist: Array<Array<any>> = [];
@@ -41,6 +141,7 @@ export const deleteItem = async (items: any, itemId: string) => {
       newItems[itemKey] = items[itemKey];
     }
   });
+  // Call the endpoint (with accessToken as param) to unlink an item once it is empty. Not necessary in dev mode
 
   return newItems;
 };
@@ -52,8 +153,7 @@ export const unlinkAccount = async (items: any, itemId: string, accountId: strin
   // @ts-ignore
   const accountKeys: Array<string> = Object.keys(items[itemId].M.accounts.M);
   if (accountKeys.length <= 1) {
-    deleteItem(items, itemId);
-    return;
+    return await deleteItem(items, itemId);
   }
   accountKeys.forEach((accountKey: any) => {
     if (accountKey !== accountId) {
@@ -66,4 +166,20 @@ export const unlinkAccount = async (items: any, itemId: string, accountId: strin
   newItems[itemId].M.accounts = newAccounts;
 
   return newItems;
+};
+
+export const getAllCategories = (monthlySpending: any) => {
+  // Get all categories
+  const allCategories: any[] = [];
+  const monthlySpendingKeys = Object.keys(monthlySpending);
+  monthlySpendingKeys.forEach((monthlySpendingKey: string) => {
+    const categoriesForMonth = Object.keys(monthlySpending[monthlySpendingKey]?.M?.Spending?.M)
+    allCategories.push(categoriesForMonth);
+  });  
+  const allCategoriesFlattened = allCategories.flat();
+  // @ts-ignore
+  const allUniqueCategories = [...(new Set(allCategoriesFlattened))];
+  return allUniqueCategories.filter((category) => {
+    return category !== "Overall";
+  });
 };

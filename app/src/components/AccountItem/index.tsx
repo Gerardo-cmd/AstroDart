@@ -1,17 +1,19 @@
 /** @jsxImportSource @emotion/react */
 
 import { css } from "@emotion/react";
-import {Paper, Typography } from '@mui/material';
+import {Paper, Theme, Typography } from '@mui/material';
+import { useTheme } from '@mui/material/styles'
 
 type Props = {
   name: string;
   balance: string;
+  type: string;
 }
 
 const styles = {
-  paper: css({
-    border: '1px solid #7c4dff',
-    background: 'white',
+  paper: (theme: Theme) => css({
+    border: '0.5px solid black',
+    background: theme.palette.primary.main,
     padding: '10px',
     marginBottom: '10px'
   }),
@@ -19,13 +21,17 @@ const styles = {
 
 const AccountItem: React.FC<Props> = ({ 
   name,
-  balance
+  balance,
+  type
 }) => {
-
+  const theme = useTheme();
+  const isLiability = type === "credit" || type === "loan";
+  const isNegative = isLiability ? "-" : "";
+  
   return (
     <>
-      <Paper css={styles.paper}>
-        <Typography variant="body1">{`${name}: $${balance}`}</Typography>
+      <Paper css={styles.paper(theme)}>
+        <Typography variant="body1">{`${name}: ${isNegative}$${balance}`}</Typography>
       </Paper>
     </>
   )

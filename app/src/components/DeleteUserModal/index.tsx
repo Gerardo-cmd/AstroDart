@@ -20,6 +20,12 @@ type SimpleDialogProps = {
 };
 
 const styles = {
+  container: css({
+    display: 'flex',
+    justifyContent: 'center',
+    flexDirection: 'column',
+    textAlign: 'center',
+  }),
   input: css({
     margin: '50px 0px',
   }),
@@ -78,7 +84,7 @@ const SimpleDialog: React.FC<SimpleDialogProps> = ({ onClose, open }) => {
   }
 
   return (
-    <Dialog css={styles.popupModal} onClose={handleClose} open={open}>
+    <Dialog css={styles.popupModal} disableScrollLock={true} onClose={handleClose} open={open}>
       <DialogTitle>You are about to delete your account. This cannot be undone. To confirm, enter your password and click below.</DialogTitle>
       <TextField 
         label="Password" 
