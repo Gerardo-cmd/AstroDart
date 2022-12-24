@@ -42,14 +42,15 @@ const NetworthHistoryChart: React.FC<Props> = ({ currentNetworth }) => {
     backgroundColor: theme.palette.background.default, 
     vAxis: {
       title: 'Networth ($)', 
-      textStyle: { color: theme.typography.body2.color }, 
       titleTextStyle: { color: theme.typography.body2.color }, 
+      textStyle: { color: theme.typography.body2.color }, 
     },
     hAxis: {
       title: 'Date (mm-yyyy)', 
       titleTextStyle: { color: theme.typography.body2.color }, 
+      textStyle: { color: theme.typography.body2.color }, 
     },
-    colors: lightMode ? ['blue'] : ['#a246d4'] 
+    colors: lightMode ? ['blue'] : ["#38d15b"] 
   };
 
   return (

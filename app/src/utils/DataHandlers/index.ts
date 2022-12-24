@@ -1,3 +1,4 @@
+import { Category } from "../../utils/types";
 export const getAccountsArray = (newItems: any) => {
   const accountsArray: Array<any> = [];
 
@@ -169,35 +170,9 @@ export const unlinkAccount = async (items: any, itemId: string, accountId: strin
 };
 
 export const getAllCategories = (transactions: any, monthlySpending: any) => {
-  // Get all categories
-  const allCategories: string[][] = [];
-  const monthlySpendingKeys = Object.keys(monthlySpending);
-  monthlySpendingKeys.forEach((monthlySpendingKey: string) => {
-    const categoriesForMonth = Object.keys(monthlySpending[monthlySpendingKey]?.M?.Spending?.M)
-    allCategories.push(categoriesForMonth);
-  });  
-  const allCategoriesFlattened = allCategories.flat();
-
-  // Now get the categories from transactions
-  const currentCategories: string[] = [];
-  transactions.forEach((transaction: any) => {
-    currentCategories.push(transaction.category);
+  const allCategories: string[] = [];
+  Category.Colors["Dark"].forEach((value, key) => {
+    allCategories.push(key);
   });
-
-  console.log("Below is currentCategories");
-  console.log(currentCategories);
-  currentCategories.forEach((category: any) => {
-    category.forEach((singleCategory: string) => {
-      if (!allCategoriesFlattened.includes(singleCategory)) {
-        allCategoriesFlattened.push(singleCategory);
-      }
-    })
-    
-  });
-
-  // @ts-ignore
-  const allUniqueCategories = [...(new Set(allCategoriesFlattened))];
-  return allUniqueCategories.filter((category) => {
-    return category !== "Overall";
-  });
+  return allCategories;
 };

@@ -38,6 +38,7 @@ const styles = {
 };
 
 const Checklist = () => {
+  const theme = useTheme();
   const navigate = useNavigate();
   const { email, checklist, userToken, dispatch } = useContext(Context);
   const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -133,7 +134,8 @@ const Checklist = () => {
           (
             <Paper css={styles.paper}>
               <Checkbox color="success" checked={false} disabled />
-              <TextField
+              <TextField 
+                color="info" 
                 label="Action"
                 error={hasError}
                 helperText={errorText}
@@ -147,6 +149,11 @@ const Checklist = () => {
                 }}
                 id="action-input" 
                 name="action" 
+                sx={{
+                  "& .MuiInputBase-root": {
+                      color: theme.typography.body1.color
+                  }
+                }} 
               />
               <Button color="info" onClick={handleSave}><CheckIcon /></Button>
               <Button color="info" onClick={() => {

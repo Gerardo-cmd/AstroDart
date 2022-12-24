@@ -17,6 +17,7 @@ import { useTheme } from '@mui/material/styles';
 import { useNavigate } from 'react-router';
 import Context from "../context";
 import { 
+  getAllCategories, 
   getAccountsArray, 
   getCashAccountsArray, 
   getCreditAccountsArray, 
@@ -32,7 +33,7 @@ const styles = {
     display: 'flex',
     justifyContent: 'center',
     flexDirection: 'column',
-    textAlign: 'center',
+    textAlign: 'center', 
   }),
   header: css({
     marginBottom: '24px',
@@ -61,7 +62,6 @@ const LoginPage: React.FC = () => {
   const [errorText, setErrorText] = useState<string>("");
 
   // TODO: If the user links a duplicate bank account, notify and nothing happens (Need to add account numer and routing number for that?)
-  // TODO: Find a way to make the colors match between pie chart and bar chart
   // TODO: Refactor cron functions into another folder  
   // TODO: Implement editing for an existing checklist item
   // TODO: Make Edit/Add Checklist a sticky footer
@@ -109,7 +109,8 @@ const LoginPage: React.FC = () => {
         loanAccountsArray: getLoanAccountsArray(data.items),
         investmentAccountsArray: getInvestmentAccountsArray(data.items), 
         transactions: transactionsData, 
-        monthlySpending: data.monthlySpending 
+        monthlySpending: data.monthlySpending, 
+        allCategories: getAllCategories(transactionsData, data.monthlySpending)
       },
     });
     setLoading(false);
@@ -121,6 +122,7 @@ const LoginPage: React.FC = () => {
       <Typography variant="h2" css={styles.header}>AstroDart</Typography>
       <Paper css={styles.paper}>
         <Box
+          color="primary" 
           component="form"
           sx={{
               '& .MuiTextField-root': { m: 1, width: '25ch' },
@@ -141,6 +143,11 @@ const LoginPage: React.FC = () => {
               }}
               id="email-input" 
               name="email" 
+              sx={{
+                "& .MuiInputBase-root": {
+                    color: theme.typography.body1.color
+                }
+              }} 
             />
           </div>
           <div css={styles.input(theme)}>
@@ -156,6 +163,11 @@ const LoginPage: React.FC = () => {
               }}
               id="password-input" 
               name="password" 
+              sx={{
+                "& .MuiInputBase-root": {
+                    color: theme.typography.body1.color
+                }
+              }} 
             />
           </div>
           <div css={styles.input(theme)}>
@@ -163,10 +175,15 @@ const LoginPage: React.FC = () => {
               <CircularProgress /> 
               : 
               <Input 
-                color="info" 
+                color="secondary" 
                 type="submit" 
                 value="Login" 
                 disabled={email?.trim() === "" || password?.trim() === ""} 
+                sx={{
+                  "& .MuiInputBase-root": {
+                      color: theme.typography.body1.color
+                  }
+                }} 
               />
             }
           </div>

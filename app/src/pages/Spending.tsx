@@ -7,7 +7,8 @@ import Context from "../context";
 import Menu from '../components/Menu';
 import TransactionsPieChart from "../components/TransactionsPieChart";
 import TransactionsBarChart from "../components/TransactionsBarChart";
-import TransactionsTable from "../components/TransactionsTable.tsx";
+import TransactionsTable from "../components/TransactionsTable";
+import TransactionChartsLegend from "../components/TransactionChartsLegend";
 import { CircularProgress, Container, Typography } from '@mui/material';
 import { PAGE_TYPES } from '../utils/types';
 import { useNavigate } from "react-router-dom";
@@ -92,14 +93,19 @@ const Spending: React.FC = () => {
             Connect some cash or credit card accounts to see your spending!
           </Typography>
           :
-          <div className="row">
-          <div className="col-md" css={styles.graph}>
-            <TransactionsPieChart />
-          </div>
-          <div className="col-md" css={styles.graph}>
-            <TransactionsBarChart />
-          </div>
-        </div>
+          <>
+            <div className="row">
+              <div className="col-md" css={styles.graph}>
+                <TransactionsPieChart />
+              </div>
+              <div className="col-md" css={styles.graph}>
+                <TransactionsBarChart />
+              </div>
+            </div>
+            <div className="row">
+              <TransactionChartsLegend />
+            </div>
+          </>
         }
         
         <div css={styles.graph}>

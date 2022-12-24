@@ -43,6 +43,7 @@ const styles = {
 };
 
 const SignUpPage: React.FC = () => {
+  const theme = useTheme();
   const { dispatch } = useContext(Context);
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
@@ -112,7 +113,7 @@ const SignUpPage: React.FC = () => {
           <div css={styles.input}>
             <TextField 
               label="First Name" 
-              color="secondary" 
+              color="info" 
               value={firstName} 
               onChange={(e) => {
                 e.preventDefault();
@@ -121,12 +122,17 @@ const SignUpPage: React.FC = () => {
               }}
               id="first-name-input" 
               name="firstname" 
+              sx={{
+                "& .MuiInputBase-root": {
+                    color: theme.typography.body1.color
+                }
+              }} 
             />
           </div>
           <div css={styles.input}>
             <TextField 
               label="Last Name" 
-              color="secondary" 
+              color="info" 
               value={lastName} 
               onChange={(e) => {
                 e.preventDefault();
@@ -135,12 +141,17 @@ const SignUpPage: React.FC = () => {
               }}
               id="last-name-input" 
               name="lastname" 
+              sx={{
+                "& .MuiInputBase-root": {
+                    color: theme.typography.body1.color
+                }
+              }} 
             />
           </div>
           <div css={styles.input}>
             <TextField 
               label="Email" 
-              color="secondary" 
+              color="info" 
               value={email} 
               onChange={(e) => {
                 e.preventDefault();
@@ -149,13 +160,18 @@ const SignUpPage: React.FC = () => {
               }}
               id="email-input" 
               name="email" 
+              sx={{
+                "& .MuiInputBase-root": {
+                    color: theme.typography.body1.color
+                }
+              }} 
             />
           </div>
           <div css={styles.input}>
             <TextField 
               label="Password" 
               type="password" 
-              color="secondary" 
+              color="info" 
               value={password} 
               error={errorText === "Passwords do not match"}
               onChange={(e) => {
@@ -165,13 +181,18 @@ const SignUpPage: React.FC = () => {
               }}
               id="password-input" 
               name="password" 
+              sx={{
+                "& .MuiInputBase-root": {
+                    color: theme.typography.body1.color
+                }
+              }} 
             />
           </div>
           <div css={styles.input}>
             <TextField 
               label="Confirm Password" 
               type="password" 
-              color="secondary" 
+              color="info" 
               value={confirmPassword} 
               error={errorText === "Passwords do not match"}
               onChange={(e) => {
@@ -181,6 +202,11 @@ const SignUpPage: React.FC = () => {
               }}
               id="confirm-password-input" 
               name="confirmPassword" 
+              sx={{
+                "& .MuiInputBase-root": {
+                    color: theme.typography.body1.color
+                }
+              }} 
             />
           </div>
           <div css={styles.input}>

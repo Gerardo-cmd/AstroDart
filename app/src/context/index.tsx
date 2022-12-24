@@ -3,6 +3,7 @@ import { createContext, useReducer, Dispatch, ReactNode } from "react";
 type Checklist = Map<string, Map<string, boolean>> | {};
 
 interface PlaidState {
+  allCategories: string[];
   lightMode: boolean;
   userToken: string;
   email: string;
@@ -37,6 +38,7 @@ interface PlaidState {
   
 // TODO: LOOK AT HOW TO STORE MULIPLE ITEMS!
 const initialState: PlaidState = {
+  allCategories: [], 
   lightMode: false,  
   userToken: "",
   email: "",
