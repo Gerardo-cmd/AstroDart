@@ -119,9 +119,9 @@ const DeleteUserModal: React.FC = () => {
   return (
     <div>
       <Button 
+        color="error"
         variant="contained" 
         onClick={handleClickOpen} 
-        css={styles.deleteButton}
       >
         Delete Account
       </Button>

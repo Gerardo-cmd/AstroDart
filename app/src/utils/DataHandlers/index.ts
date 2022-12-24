@@ -168,15 +168,33 @@ export const unlinkAccount = async (items: any, itemId: string, accountId: strin
   return newItems;
 };
 
-export const getAllCategories = (monthlySpending: any) => {
+export const getAllCategories = (transactions: any, monthlySpending: any) => {
   // Get all categories
-  const allCategories: any[] = [];
+  const allCategories: string[][] = [];
   const monthlySpendingKeys = Object.keys(monthlySpending);
   monthlySpendingKeys.forEach((monthlySpendingKey: string) => {
     const categoriesForMonth = Object.keys(monthlySpending[monthlySpendingKey]?.M?.Spending?.M)
     allCategories.push(categoriesForMonth);
   });  
   const allCategoriesFlattened = allCategories.flat();
+
+  // Now get the categories from transactions
+  const currentCategories: string[] = [];
+  transactions.forEach((transaction: any) => {
+    currentCategories.push(transaction.category);
+  });
+
+  console.log("Below is currentCategories");
+  console.log(currentCategories);
+  currentCategories.forEach((category: any) => {
+    category.forEach((singleCategory: string) => {
+      if (!allCategoriesFlattened.includes(singleCategory)) {
+        allCategoriesFlattened.push(singleCategory);
+      }
+    })
+    
+  });
+
   // @ts-ignore
   const allUniqueCategories = [...(new Set(allCategoriesFlattened))];
   return allUniqueCategories.filter((category) => {

@@ -41,7 +41,7 @@ const Header: React.FC = () => {
             </Callout>
           ) : linkToken === "" ? (
             <div className={styles.linkButton}>
-              <Button disabled>
+              <Button color="info" disabled>
                 Loading...
               </Button>
             </div>

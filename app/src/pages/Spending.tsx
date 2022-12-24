@@ -52,7 +52,7 @@ const styles = {
     marginBottom: '25px'
   }), 
   graph: css({
-    marginBottom: '5px',
+    marginBottom: '10px',
   })
 };
 

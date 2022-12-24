@@ -31,7 +31,6 @@ const styles = {
   }),
   paper: css({
     border: '0.5px solid black',
-    background: 'white',
     padding: '24px',
     marginBottom: '24px'
   }),
@@ -200,7 +199,7 @@ const SignUpPage: React.FC = () => {
         </Box>
         <div>
           <div style={{margin: '8px'}}>
-            <Button variant="contained" onClick={() => {navigate("/")}}>Go back</Button>
+            <Button color="info" variant="contained" onClick={() => {navigate("/")}}>Go back</Button>
           </div>
         </div>
       </Paper>

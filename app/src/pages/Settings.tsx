@@ -12,7 +12,7 @@ import { PAGE_TYPES } from '../utils/types'
 
 const Settings = () => {
   const navigate = useNavigate();
-  const { userToken } = useContext(Context);
+  const { lightMode, userToken, dispatch } = useContext(Context);
 
   if (userToken === "") {
     navigate("/");
@@ -31,17 +31,30 @@ const Settings = () => {
     }),
   };
 
+  const handleModeChange = () => {
+    dispatch({
+      type: 'SET_STATE',
+      state: {
+        lightMode: !lightMode
+      }
+    });
+  };
+
   return (
     <>
       <Menu page={PAGE_TYPES.Settings} />
       <div className="container" css={styles.container}>
         <Typography variant="h4" css={styles.header}>Settings</Typography>
         <div>
-          <Button variant="contained" onClick={() => navigate("/deleteItems")}>Unlink Accounts</Button>
+          <Button color="info" variant="contained" onClick={() => navigate("/deleteItems")}>Unlink Accounts</Button>
         </div>
         <br />
         <div>
           <DeleteUserModal />
+        </div>
+        <br />
+        <div>
+          <Button color="info" variant="contained" onClick={handleModeChange}>Change mode</Button>
         </div>
       </div>
     </>

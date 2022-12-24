@@ -57,7 +57,7 @@ const Menu: React.FC<Props> = ({ page, window }) => {
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center', background: theme.palette.primary.main, minHeight: '100vh' }}>
-      <Typography variant="h5" sx={{ my: 2 }}>
+      <Typography variant="h5" sx={{ my: 2, color: 'white' }}>
         AstroDart
       </Typography>
       <Divider />
@@ -102,9 +102,9 @@ const Menu: React.FC<Props> = ({ page, window }) => {
           <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
             {navItems.map((item) => (
               <Button 
+                sx={{ color: theme.palette.info.main}}
                 key={item} 
                 disabled={page?.toLowerCase() === item.toLowerCase()} 
-                sx={{ color: 'black' }}
                 onClick={item === "Logout" ? logout : () => navigate(`/${item.toLowerCase()}`)}
               >
                 {item}

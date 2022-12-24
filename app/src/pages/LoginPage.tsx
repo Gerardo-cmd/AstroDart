@@ -9,10 +9,10 @@ import {
   Container,
   Input, 
   Paper,
-  TextField,
-  Theme,
+  TextField, 
   Typography
 } from '@mui/material';
+import type { Theme } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useNavigate } from 'react-router';
 import Context from "../context";
@@ -39,12 +39,12 @@ const styles = {
   }),
   paper:  () => css({
     border: '0.5px solid black',
-    background: 'white',
     padding: '24px',
     marginBottom: '24px'
   }),
-  input: css({
-    margin: '24px 0px',
+  input: (theme: Theme) => css({
+    margin: '24px 0px', 
+    color: theme.typography.body2.color 
   }),
   error: css({
     color: 'red',
@@ -61,9 +61,8 @@ const LoginPage: React.FC = () => {
   const [errorText, setErrorText] = useState<string>("");
 
   // TODO: If the user links a duplicate bank account, notify and nothing happens (Need to add account numer and routing number for that?)
-  // TODO: Have the google bar chart compare monthly spending up to 2 (?) prior months 
   // TODO: Find a way to make the colors match between pie chart and bar chart
-  // TODO: Refactor endpoints to be more organized in BE 
+  // TODO: Refactor cron functions into another folder  
   // TODO: Implement editing for an existing checklist item
   // TODO: Make Edit/Add Checklist a sticky footer
   // TODO: Finish styling the app
@@ -130,10 +129,10 @@ const LoginPage: React.FC = () => {
           autoComplete="off"
           onSubmit={handleSubmit}
         >
-          <div css={styles.input}>
+          <div css={styles.input(theme)}>
             <TextField 
               label="Email" 
-              color="secondary" 
+              color="info" 
               value={email} 
               onChange={(e) => {
                 e.preventDefault();
@@ -144,11 +143,11 @@ const LoginPage: React.FC = () => {
               name="email" 
             />
           </div>
-          <div css={styles.input}>
+          <div css={styles.input(theme)}>
             <TextField 
               label="Password" 
               type="password" 
-              color="secondary" 
+              color="info" 
               value={password} 
               onChange={(e) => {
                 e.preventDefault();
@@ -159,25 +158,26 @@ const LoginPage: React.FC = () => {
               name="password" 
             />
           </div>
-          <div css={styles.input}>
+          <div css={styles.input(theme)}>
             {loading ? 
               <CircularProgress /> 
               : 
               <Input 
+                color="info" 
                 type="submit" 
                 value="Login" 
                 disabled={email?.trim() === "" || password?.trim() === ""} 
               />
             }
           </div>
-          <Typography css={styles.error}>{errorText}</Typography>
+          <Typography color="error">{errorText}</Typography>
         </Box>
         <div>
           <div>
             <Typography>Don't have an account?</Typography>
           </div>
           <div style={{margin: '8px'}}>
-            <Button variant="contained" onClick={() => {navigate("/signup")}}>Sign Up</Button>
+            <Button color="info" variant="contained" onClick={() => {navigate("/signup")}}>Sign Up</Button>
           </div>
         </div>
       </Paper>

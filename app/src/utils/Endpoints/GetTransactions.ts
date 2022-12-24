@@ -17,8 +17,6 @@ const getTransactions = async (email: string) => {
   }
 
   const data = await response.json();
-  console.log("The transactions data is below...");
-  console.log(data);
   return data;
 };
 

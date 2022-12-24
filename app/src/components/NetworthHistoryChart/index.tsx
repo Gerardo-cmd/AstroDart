@@ -28,23 +28,28 @@ type Props = {
 
 const NetworthHistoryChart: React.FC<Props> = ({ currentNetworth }) => {
   const theme = useTheme();
-  const { networthHistory } = useContext(Context);
+  const { lightMode, networthHistory } = useContext(Context);
 
   const networthData = transformNetworthHistoryIntoData(networthHistory, currentNetworth);
 
   const options = {
-    title: "Networth (USD) Over Time",
+    title: "Networth (USD) Over Time", 
+    titleTextStyle: { color: theme.typography.body2.color }, 
     subtitle: "in dollars (USD)", 
     chartArea: { width: "75%" }, 
-    curveType: "function",
-    legend: "none",
-    backgroundColor: theme.palette.secondary.main, 
+    curveType: "function", 
+    legend: "none", 
+    backgroundColor: theme.palette.background.default, 
     vAxis: {
-      title: 'Networth ($)'
+      title: 'Networth ($)', 
+      textStyle: { color: theme.typography.body2.color }, 
+      titleTextStyle: { color: theme.typography.body2.color }, 
     },
     hAxis: {
-      title: 'Date (mm-yyyy)'
-    }
+      title: 'Date (mm-yyyy)', 
+      titleTextStyle: { color: theme.typography.body2.color }, 
+    },
+    colors: lightMode ? ['blue'] : ['#a246d4'] 
   };
 
   return (

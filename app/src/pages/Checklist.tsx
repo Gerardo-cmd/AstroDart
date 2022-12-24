@@ -111,7 +111,7 @@ const Checklist = () => {
                 />
               );
             })}
-            <Button variant="contained" onClick={() => navigate("/checklist/edit")}>Edit</Button>
+            <Button color="info" variant="contained" onClick={() => navigate("/checklist/edit")}>Edit</Button>
         </div>
     </>
   );

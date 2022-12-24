@@ -28,8 +28,7 @@ const styles = {
     marginBottom: '30px',
   }),
   paper: css({
-    border: '0.5px solid black',
-    background: 'white',
+    border: '0.5px solid black', 
     padding: '10px',
     marginBottom: '10px'
   }),
@@ -133,7 +132,7 @@ const Checklist = () => {
         {isEditing ? 
           (
             <Paper css={styles.paper}>
-              <Checkbox checked={false} disabled />
+              <Checkbox color="success" checked={false} disabled />
               <TextField
                 label="Action"
                 error={hasError}
@@ -149,8 +148,8 @@ const Checklist = () => {
                 id="action-input" 
                 name="action" 
               />
-              <Button onClick={handleSave}><CheckIcon /></Button>
-              <Button onClick={() => {
+              <Button color="info" onClick={handleSave}><CheckIcon /></Button>
+              <Button color="info" onClick={() => {
                 setNewAction("");
                 setIsEditing(false);
               }}><DeleteIcon /></Button>
@@ -159,10 +158,10 @@ const Checklist = () => {
           : 
           ""
         }
-        <Button variant="contained" disabled={isEditing} onClick={() => setIsEditing(true)}>Add</Button>
+        <Button color="info" variant="contained" disabled={isEditing} onClick={() => setIsEditing(true)}>Add</Button>
         <br />
         <br />
-        <Button variant="contained" onClick={handleExit}>Exit</Button>
+        <Button color="info" variant="contained" onClick={handleExit}>Exit</Button>
       </div>
     </>
   );

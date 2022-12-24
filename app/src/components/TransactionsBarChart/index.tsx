@@ -12,15 +12,17 @@ import { calculateTotals } from "../TransactionsPieChart";
 
 const styles = {
   barChart: css({
-    fontWeight: 'bold'
+    fontWeight: 'bold' 
   })
 };
 
+// Get all categories first, then add the current month's catefories, thencalculate the totals!
+
 //First element will be an array with the date (mm-yyyy) and then each category. Go througheach month and get every category. Then go through each month and ask for all categories even if it doesn't exist in that month (make it 0)
-const getData = (monthlySpending: any, transactions: any) => {
+const getData = (monthlySpending: any, transactions: any[]) => {
   // Get all categories
   const data: any[][] = [["Date"]];
-  const allCategories = getAllCategories(monthlySpending);
+  const allCategories: string[] = getAllCategories(transactions, monthlySpending);
   const headers = data[0].concat(allCategories);
   data[0] = headers;
   data[0].push({ role: 'annotation' });
@@ -42,7 +44,7 @@ const getData = (monthlySpending: any, transactions: any) => {
   });
 
   // Now for the current month
-  const currentMonth = calculateTotals(transactions);
+  const currentMonth = calculateTotals(monthlySpending, transactions);
   const currentMonthData: any[] = ["This month"];
 
   allCategories.forEach((category: string) => {
@@ -58,17 +60,27 @@ const getData = (monthlySpending: any, transactions: any) => {
     currentMonthData.push(currentValue);
   });
 
+
+  // currentMonth.forEach((categoryArray, index) => {
+  //   if (index !== 0) {
+  //     const amount = categoryArray[1];
+  //     if (!allCategories.includes(categoryArray[0])) {
+  //       currentMonthData.push(parseFloat(amount));
+  //     }
+  //   }
+  // });
+
+  // Add the overall amount to currentMonthData
   let total = 0;
   currentMonth.forEach((category, index) => {
     if (index !== 0) {
       const amount = category[1];
       total += amount;
     }
-  })
+  });
 
-  currentMonthData.push(`$${total}`);
+  currentMonthData.push(`$${Math.round((total + Number.EPSILON) * 100) / 100}`);
   data.push(currentMonthData);
-
   return data;
 }
 
@@ -83,17 +95,21 @@ const TransactionsBarChart: React.FC = () => {
   const data = getData(monthlySpending, transactions);
   const options = {
     title: "Spending Per Month", 
+    titleTextStyle: { color: theme.typography.body2.color }, 
     legend: "bottom", 
+    legendTextStyle: { color: theme.typography.body2.color }, 
     chartArea: { width: "75%" }, 
     isStacked: true, 
     hAxis: {
       title: "Total Spending ($)", 
+      textStyle: { color: theme.typography.body2.color }, 
       minValue: 0, 
     }, 
     vAxis: {
       title: "Date (mm-yyyy)", 
+      textStyle: { color: theme.typography.body2.color }, 
     }, 
-    backgroundColor: theme.palette.secondary.main
+    backgroundColor: theme.palette.background.default 
   };
 
   return (

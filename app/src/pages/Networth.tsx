@@ -10,6 +10,7 @@ import Header from '../components/Headers';
 import AccountItem from "../components/AccountItem";
 import NetworthHistoryChart from "../components/NetworthHistoryChart";
 import { Accordion, AccordionSummary, AccordionDetails, Button, CircularProgress, Container, Dialog, DialogTitle, Typography } from '@mui/material';
+import type { Theme } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { PAGE_TYPES } from '../utils/types';
 import createLinkToken from "../utils/Endpoints/CreateLinkToken";
@@ -56,6 +57,10 @@ const styles = {
   }),
   graph: css({
     marginBottom: '5px',
+  }), 
+  accordion: (theme: Theme) => css({
+    background: theme.palette.primary.main, 
+    color: theme.typography.body2.color 
   })
 };
 
@@ -84,6 +89,7 @@ const SimpleDialog: React.FC<SimpleDialogProps> = ({ onClose, open }) => {
 }
 
 const Networth: React.FC = () => {
+  const theme = useTheme();
   const navigate = useNavigate();
   const { 
     accountsArray, 
@@ -340,7 +346,7 @@ const Networth: React.FC = () => {
         <div className="container-lg" css={styles.container}> 
           <div css={styles.accountGroup}>
             {/** Cash */}
-            <Accordion>
+            <Accordion css={styles.accordion(theme)}>
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls="panel1a-content"
@@ -350,7 +356,7 @@ const Networth: React.FC = () => {
                   transformDuration: '0s'
                 }}
               >
-                <Typography>Cash Accounts (${cashNetworth})</Typography>
+                <Typography variant="h6">Cash Accounts (${cashNetworth})</Typography>
               </AccordionSummary>
               <AccordionDetails>
                 {!!cashAccountsArray.length && (
@@ -368,12 +374,12 @@ const Networth: React.FC = () => {
                   </div>
                 )}
                 <div>
-                  <Button variant="contained" onClick={handleNewCashAccount}>{!!cashAccountsArray.length ? "Connect another cash account" : "Connect a cash account"}</Button>
+                  <Button color="info" variant="contained" onClick={handleNewCashAccount}>{!!cashAccountsArray.length ? "Connect another cash account" : "Connect a cash account"}</Button>
                 </div>
               </AccordionDetails>
             </Accordion>
             {/** Credit Cards */}
-            <Accordion>
+            <Accordion css={styles.accordion(theme)}>
               <AccordionSummary
                 sx={{transform: "none"}}
                 expandIcon={<ExpandMoreIcon />}
@@ -381,10 +387,10 @@ const Networth: React.FC = () => {
                 id="panel1a-header"
               >
                 {creditNetworth === 0 ? 
-                  <Typography>Credit Card Accounts (${creditNetworth})</Typography>
+                  <Typography variant="h6">Credit Card Accounts (${creditNetworth})</Typography>
                 :
                   // @ts-ignore
-                  <Typography>Credit Card Accounts (-${creditNetworth * -1})</Typography>
+                  <Typography variant="h6">Credit Card Accounts (-${creditNetworth * -1})</Typography>
                 }
               </AccordionSummary>
               <AccordionDetails>
@@ -403,12 +409,12 @@ const Networth: React.FC = () => {
                   </div>
                 )}
                 <div>
-                  <Button variant="contained" onClick={handleNewCreditCardAccount}>{!!creditAccountsArray.length ? "Connect another credit card account" : "Connect a credit card account"}</Button>
+                  <Button color="info" variant="contained" onClick={handleNewCreditCardAccount}>{!!creditAccountsArray.length ? "Connect another credit card account" : "Connect a credit card account"}</Button>
                 </div>
               </AccordionDetails>
             </Accordion>
             {/** Loans */}
-            <Accordion>
+            <Accordion css={styles.accordion(theme)}>
               <AccordionSummary
                 sx={{transform: "none"}}
                 expandIcon={<ExpandMoreIcon />}
@@ -416,10 +422,10 @@ const Networth: React.FC = () => {
                 id="panel1a-header"
               >
                 {loanNetworth === 0 ? 
-                  <Typography>Loan Accounts (${loanNetworth})</Typography>
+                  <Typography variant="h6">Loan Accounts (${loanNetworth})</Typography>
                 :
                   // @ts-ignore
-                  <Typography>Loan Accounts (-${loanNetworth * -1})</Typography>
+                  <Typography variant="h6">Loan Accounts (-${loanNetworth * -1})</Typography>
                 }
               </AccordionSummary>
               <AccordionDetails>
@@ -438,18 +444,18 @@ const Networth: React.FC = () => {
                   </div>
                 )}
                 <div>
-                  <Button variant="contained" onClick={handleNewCreditCardAccount}>{!!loanAccountsArray.length ? "Connect another credit card account" : "Connect a credit card account"}</Button>
+                  <Button color="info" variant="contained" onClick={handleNewCreditCardAccount}>{!!loanAccountsArray.length ? "Connect another credit card account" : "Connect a credit card account"}</Button>
                 </div>
               </AccordionDetails>
             </Accordion>
             {/** Investments */}
-            <Accordion>
+            <Accordion css={styles.accordion(theme)}>
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls="panel1a-content"
                 id="panel1a-header"
               >
-                <Typography>Investment Accounts (${investmentNetworth})</Typography>
+                <Typography variant="h6">Investment Accounts (${investmentNetworth})</Typography>
               </AccordionSummary>
               <AccordionDetails>
                 {!!investmentAccountsArray.length && (
@@ -467,7 +473,7 @@ const Networth: React.FC = () => {
                   </div>
                 )}
                 <div>
-                  <Button variant="contained" onClick={handleNewInvestmentAccount}>{!!investmentAccountsArray.length ? "Connect another investment account" : "Connect an investment account"}</Button>
+                  <Button color="info" variant="contained" onClick={handleNewInvestmentAccount}>{!!investmentAccountsArray.length ? "Connect another investment account" : "Connect an investment account"}</Button>
                 </div>
               </AccordionDetails>
             </Accordion>

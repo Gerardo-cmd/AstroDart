@@ -143,7 +143,7 @@ const Link = () => {
   }, [ready, open, isOauth]);
 
   return (
-    <Button variant="contained" type="button" onClick={() => open()} disabled={!ready}>
+    <Button color="info" variant="contained" type="button" onClick={() => open()} disabled={!ready}>
       Add another account
     </Button>
   );

@@ -1,9 +1,10 @@
 /** @jsxImportSource @emotion/react */
 
-import React from 'react';
+import React, { useContext } from 'react';
 import { css } from '@emotion/react'
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Theme, useTheme } from "@mui/material"
+import Context from "./context";
 import LoginPage from './pages/LoginPage';
 import Networth from './pages/Networth';
 import Spending from './pages/Spending';
@@ -13,26 +14,33 @@ import Settings from './pages/Settings';
 import SignUp from './pages/SignUp';
 import DeleteItems from './pages/DeleteItems';
 
-
 import {
   BrowserRouter,
   Routes,
   Route
 } from "react-router-dom";
 
-const theme = createTheme({
+const lightTheme = createTheme({
   palette: {
     primary: {
       main: '#fffffd'
     },
     secondary: {
       // main: '#FBF4E2'
-      main: '#f0ece7' 
+      main: '#000000' 
     },
+    info: {
+      main: '#000000'
+    }, 
+    error: {
+      main: '#f53d3d'
+    }, 
+    background: {
+      default: '#f0ece7' 
+    }, 
   },
   typography: {
     body1: {
-      // color: '#024bc2'
       color: 'black' 
     },
     body2: {
@@ -59,20 +67,69 @@ const theme = createTheme({
   }
 });
 
+const darkTheme = createTheme({
+  palette: {
+    primary: {
+      main: '#403f3f'
+    },
+    secondary: {
+      main: '#000000' 
+    },
+    info: {
+      main: '#ffffff'
+    }, 
+    error: {
+      main: '#f53d3d'
+    }, 
+    background: {
+      default: '#242323', 
+      paper: '#403f3f'
+    }, 
+  },
+  typography: {
+    body1: {
+      color: 'white' 
+    },
+    body2: {
+      color: '#adadad'
+    },
+    h1: {
+      color: '#adadad'
+    }, 
+    h2: {
+      color: '#adadad'
+    },
+    h3: {
+      color: '#adadad'
+    },
+    h4: {
+      color: '#adadad'
+    },
+    h5: {
+      color: 'white'
+    }, 
+    h6: {
+      color: '#adadad'
+    },
+  }
+});
+
 const styles = {
   basicLayout: (theme: Theme) => css({
     // background: '#e8eaf6',
-    background: theme.palette.secondary.main, 
-    color: 'black',
+    background: theme.palette.background.default, 
+    color: theme.typography.body1.color,
     minHeight: '100vh'
   }),
 };
 
 const App: React.FC = () => {
   // const theme = useTheme();
+  const { lightMode } = useContext(Context);
+
   return (
-    <ThemeProvider theme={theme}>
-      <div css={styles.basicLayout(theme)} className="App">
+    <ThemeProvider theme={lightMode ? lightTheme : darkTheme}>
+      <div css={styles.basicLayout(lightMode ? lightTheme : darkTheme)} className="App">
         <BrowserRouter>
           <Routes>
             <Route path="/">

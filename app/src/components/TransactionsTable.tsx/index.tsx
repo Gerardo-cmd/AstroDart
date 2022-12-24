@@ -9,6 +9,7 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 
 import Context from "../../context";
+import { useTheme } from '@mui/material';
 
 interface Column {
   id: 'date' | 'account' | 'amount' | 'name' | 'category';
@@ -47,6 +48,7 @@ interface Data {
 }
 
 const TransactionsTable: React.FC = () => {
+  const theme = useTheme();
   const { accountsArray, transactions } = useContext(Context);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -77,8 +79,8 @@ const TransactionsTable: React.FC = () => {
   });
 
   return (
-    <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-      <TableContainer sx={{ maxHeight: 440 }}>
+    <Paper sx={{ width: '100%', overflow: 'hidden', background: theme.palette.primary.main }}>
+      <TableContainer sx={{ maxHeight: 440, background: theme.palette.primary.main }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
@@ -86,7 +88,7 @@ const TransactionsTable: React.FC = () => {
                 <TableCell
                   key={column.id}
                   align={column.align}
-                  style={{ minWidth: column.minWidth }}
+                  style={{ minWidth: column.minWidth, color: theme.typography.body1.color }} 
                 >
                   {column.label}
                 </TableCell>
@@ -98,11 +100,11 @@ const TransactionsTable: React.FC = () => {
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row) => {
                 return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
+                  <TableRow hover role="checkbox" tabIndex={-1} key={row.code} style={{ color: theme.typography.body1.color }}>
                     {columns.map((column) => {
                       const value = row[column.id];
                       return (
-                        <TableCell key={column.id} align={column.align}>
+                        <TableCell key={column.id} align={column.align} style={{ color: theme.typography.body1.color }}>
                           {column.format && typeof value === 'number'
                             ? column.format(value)
                             : value}
