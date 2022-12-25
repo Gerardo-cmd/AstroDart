@@ -78,7 +78,7 @@ const Spending: React.FC = () => {
       <>
         <Menu page={PAGE_TYPES.Spending} />
         <div css={styles.loadingScreen}> 
-          <Typography><CircularProgress color="secondary" /></Typography>
+          <Typography><CircularProgress color="info" /></Typography>
         </div>
       </>
     );
@@ -90,7 +90,7 @@ const Spending: React.FC = () => {
     <>
       <Menu page={PAGE_TYPES.Spending} />
       <div className="container-lg" css={styles.container}> 
-        <Typography variant="h4">Transactions</Typography>
+        <Typography variant="h4">Spending</Typography>
         <br />
         {userHasNoAccounts ? 
           <Typography variant="h5" css={styles.noAccountsMessage}>

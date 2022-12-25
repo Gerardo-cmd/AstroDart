@@ -86,7 +86,7 @@ const TransactionsTable: React.FC = () => {
             <TableRow>
               {columns.map((column) => (
                 <TableCell
-                  key={column.id}
+                  key={column.id+"head"}
                   align={column.align}
                   style={{ minWidth: column.minWidth, color: theme.typography.body1.color }} 
                 >

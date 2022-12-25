@@ -93,7 +93,7 @@ const TransactionsPieChart: React.FC = () => {
       height="400px"
       data={data}
       options={options} 
-      loader={<CircularProgress />} 
+      loader={<CircularProgress color="info" />} 
     />
   );
 };

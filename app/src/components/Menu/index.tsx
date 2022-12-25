@@ -6,25 +6,38 @@ import {
   AppBar, 
   Box, 
   Button, 
+  ClickAwayListener, 
   Divider, 
   Drawer, 
+  Grow, 
   IconButton, 
   List, 
   ListItem, 
   ListItemButton, 
   ListItemText, 
+  MenuItem, 
+  MenuList, 
+  Paper, 
+  Popper, 
   Switch, 
   Toolbar, 
   Typography 
 } from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
-import LightModeIcon from '@mui/icons-material/LightMode';
+import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
+import CreditCardIcon from '@mui/icons-material/CreditCard';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
+import LightModeIcon from '@mui/icons-material/LightMode';
+import ListAltIcon from '@mui/icons-material/ListAlt';
+import LogoutIcon from '@mui/icons-material/Logout';
+import MenuIcon from '@mui/icons-material/Menu';
+import SettingsIcon from '@mui/icons-material/Settings';
 import { useTheme } from '@mui/material/styles';
 
 import { useNavigate } from "react-router-dom";
 import { useContext } from 'react';
 import Context from "../../context";
+
 
 type Props = {
   page?: string;
@@ -36,16 +49,58 @@ type Props = {
 }
 
 const drawerWidth = 240;
-const navItems = ['Networth', 'Spending', 'Checklist', 'Settings', 'Logout'];
+const navItems = ['Networth', 'Spending', 'Checklist'];
 
 const Menu: React.FC<Props> = ({ page, window }) => {
   const theme = useTheme();
   const { email, lightMode, dispatch } = useContext(Context);
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(false);
+  const anchorRef = React.useRef<HTMLButtonElement>(null);
+
+  const handleToggle = () => {
+    setOpen((prevOpen) => !prevOpen);
+  };
+
+  const handleClose = (event: Event | React.SyntheticEvent) => {
+    if (
+      anchorRef.current &&
+      anchorRef.current.contains(event.target as HTMLElement)
+    ) {
+      return;
+    }
+
+    setOpen(false);
+  };
+
+  function handleListKeyDown(event: React.KeyboardEvent) {
+    if (event.key === 'Tab') {
+      event.preventDefault();
+      setOpen(false);
+    } else if (event.key === 'Escape') {
+      setOpen(false);
+    }
+  }
+
+  // return focus to the button when we transitioned from !open -> open
+  const prevOpen = React.useRef(open);
+  React.useEffect(() => {
+    if (prevOpen.current === true && open === false) {
+      anchorRef.current!.focus();
+    }
+
+    prevOpen.current = open;
+  }, [open]);
+
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
+  };
+
+  const handleSettingClick = (event: Event | React.SyntheticEvent) => {
+    handleClose(event);
+    navigate("/settings");
   };
 
   const logout = () => {
@@ -66,7 +121,7 @@ const Menu: React.FC<Props> = ({ page, window }) => {
         </Typography>
         <Divider />
         <List>
-          {navItems.map((item: string, index: number) => {
+          {/* {navItems.map((item: string, index: number) => {
             return (
               <ListItem key={item} disablePadding>
                 <ListItemButton 
@@ -78,7 +133,53 @@ const Menu: React.FC<Props> = ({ page, window }) => {
                 </ListItemButton>
               </ListItem>
             );
-          })}
+          })} */}
+          <ListItem key="networth" disablePadding>
+            <ListItemButton 
+              color="info"
+              sx={{ textAlign: 'center' }} 
+              disabled={page?.toLowerCase() === "networth"} 
+              onClick={() => navigate("/networth")}
+            >
+              <ListItemText primary={<><AccountBalanceIcon />&nbsp;Networth</>} /> 
+            </ListItemButton>
+          </ListItem>
+          <ListItem key="spending" disablePadding>
+            <ListItemButton 
+              sx={{ textAlign: 'center' }} 
+              disabled={page?.toLowerCase() === "spending"} 
+              onClick={() => navigate("/spending")}
+            >
+              <ListItemText primary={<><CreditCardIcon />&nbsp;Spending</>} /> 
+              
+            </ListItemButton>
+          </ListItem>
+          <ListItem key="checklist" disablePadding>
+            <ListItemButton 
+              sx={{ textAlign: 'center' }} 
+              disabled={page?.toLowerCase() === "checklist"} 
+              onClick={() => navigate("/checklist")}
+            >
+              <ListItemText primary={<><ListAltIcon />&nbsp;Checklist</>} /> 
+            </ListItemButton>
+          </ListItem>
+          <ListItem key="settings" disablePadding>
+            <ListItemButton 
+              sx={{ textAlign: 'center' }} 
+              disabled={page?.toLowerCase() === "settings"}  
+              onClick={() => navigate("/settings")}
+            >
+              <ListItemText primary={<><SettingsIcon />&nbsp;Settings</>} /> 
+            </ListItemButton>
+          </ListItem>
+          <ListItem key="logout" disablePadding>
+            <ListItemButton 
+              sx={{ textAlign: 'center' }} 
+              onClick={logout}
+            >
+              <ListItemText primary={<><LogoutIcon />&nbsp;Logout</>} /> 
+            </ListItemButton>
+          </ListItem>
         </List>
       </Box>
       <Box sx={{ textAlign: 'center', background: theme.palette.primary.main, minHeight: '100vh' }}>
@@ -128,29 +229,89 @@ const Menu: React.FC<Props> = ({ page, window }) => {
             AstroDart
           </Typography>
           <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-            {navItems.map((item) => (
-              <Button 
-                sx={{ color: theme.palette.info.main}}
-                key={item} 
-                disabled={page?.toLowerCase() === item.toLowerCase()} 
-                onClick={item === "Logout" ? logout : () => navigate(`/${item.toLowerCase()}`)}
-              >
-                {item}
-              </Button>
-            ))}
-            <Switch 
-              color="error" 
-              checked={ lightMode } 
-              onClick={() => {
-                dispatch({
-                  type: 'SET_STATE',
-                  state: {
-                    lightMode: !lightMode
-                  }
-                });
-              }} 
-            />
-            {lightMode ? <LightModeIcon /> : <DarkModeIcon />}
+            <Button 
+              sx={{ color: theme.palette.info.main}}
+              key="networth" 
+              disabled={page?.toLowerCase() === "networth"} 
+              onClick={() => navigate("/networth")}
+            >
+              <AccountBalanceIcon />&nbsp;Networth 
+            </Button>
+            <Button 
+              sx={{ color: theme.palette.info.main}}
+              key="spending" 
+              disabled={page?.toLowerCase() === "spending"} 
+              onClick={() => navigate("/spending")}
+            >
+              <CreditCardIcon />&nbsp;Spending
+            </Button>
+            <Button 
+              sx={{ color: theme.palette.info.main}}
+              key="checklist" 
+              disabled={page?.toLowerCase() === "checklist"} 
+              onClick={() => navigate("/checklist")}
+            >
+              <ListAltIcon />&nbsp;Checklist
+            </Button>
+            <Button
+              ref={anchorRef}
+              color="info" 
+              id="composition-button"
+              aria-controls={open ? 'composition-menu' : undefined}
+              aria-expanded={open ? 'true' : undefined}
+              aria-haspopup="true"
+              onClick={handleToggle}
+            >
+              <SettingsIcon />
+            </Button>
+            <Popper
+              open={open}
+              anchorEl={anchorRef.current}
+              role={undefined}
+              placement="bottom-start"
+              transition
+              disablePortal
+            >
+              {({ TransitionProps, placement }) => (
+                <Grow
+                  {...TransitionProps}
+                  style={{
+                    transformOrigin:
+                      placement === 'bottom-start' ? 'left top' : 'left bottom',
+                  }}
+                >
+                  <Paper>
+                    <ClickAwayListener onClickAway={handleClose}>
+                      <MenuList
+                        autoFocusItem={open}
+                        id="composition-menu"
+                        aria-labelledby="composition-button"
+                        onKeyDown={handleListKeyDown}
+                      >
+                        &nbsp;
+                        &nbsp;
+                        {lightMode ? <LightModeIcon sx={{paddingLeft: '3px'}} color="info" /> : <DarkModeIcon sx={{paddingLeft: '3px'}} color="info" />}&nbsp;
+                        <Switch 
+                          color="error" 
+                          checked={ lightMode } 
+                          onClick={() => {
+                            dispatch({
+                              type: 'SET_STATE',
+                              state: {
+                                lightMode: !lightMode
+                              }
+                            });
+                          }} 
+                        />
+                          
+                        <MenuItem disabled={page?.toLowerCase() === "settings"}  onClick={handleSettingClick}><AdminPanelSettingsIcon />&nbsp;Account Settings</MenuItem>
+                        <MenuItem onClick={logout}><LogoutIcon />&nbsp;Logout</MenuItem>
+                      </MenuList>
+                    </ClickAwayListener>
+                  </Paper>
+                </Grow>
+              )}
+            </Popper>
           </Box>
         </Toolbar>
       </AppBar>

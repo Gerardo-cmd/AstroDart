@@ -326,7 +326,7 @@ const Networth: React.FC = () => {
       <>
         <Menu page={PAGE_TYPES.Networth} />
         <div css={styles.loadingScreen}> 
-          <Typography><CircularProgress color="secondary" /></Typography>
+          <Typography><CircularProgress color="info" /></Typography>
         </div>
       </>
     );

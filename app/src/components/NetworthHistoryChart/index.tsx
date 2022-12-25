@@ -60,7 +60,7 @@ const NetworthHistoryChart: React.FC<Props> = ({ currentNetworth }) => {
       height="350px"
       data={networthData}
       options={options} 
-      loader={<CircularProgress />}
+      loader={<CircularProgress color="info" />}
     />
   );
 };

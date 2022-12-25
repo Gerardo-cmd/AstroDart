@@ -66,7 +66,7 @@ const LoginPage: React.FC = () => {
   // TODO: Have a dropdown for settings with the option for light mode, account configuration, account settings, and log out
   // TODO: Make Edit/Add Checklist a sticky footer
   // TODO: Finish styling the app
-  // TODO: Made checklist items draggable. Would have to change the keys in db to be index numbers
+  // TODO: Make checklist items draggable. Would have to change the keys in db to be index numbers
   // TODO: Add tanstack
   // TODO: Make BE serverless with lambda functons
   // OPTIONAL: Implement email authentication (SendGrid)
@@ -173,7 +173,7 @@ const LoginPage: React.FC = () => {
           </div>
           <div css={styles.input(theme)}>
             {loading ? 
-              <CircularProgress /> 
+              <CircularProgress color="info" /> 
               : 
               <Input 
                 color="secondary" 

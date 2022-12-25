@@ -211,7 +211,7 @@ const SignUpPage: React.FC = () => {
           </div>
           <div css={styles.input}>
             {loading ? 
-              <CircularProgress /> 
+              <CircularProgress color="info" /> 
               : 
               <Input 
                 type="submit" 

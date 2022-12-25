@@ -124,7 +124,7 @@ const TransactionsBarChart: React.FC = () => {
       height="380px"
       data={data}
       options={options} 
-      loader={<CircularProgress />}
+      loader={<CircularProgress color="info" />}
     />
   );
 }

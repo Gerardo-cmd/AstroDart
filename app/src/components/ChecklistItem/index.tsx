@@ -97,7 +97,6 @@ const ChecklistItem: React.FC<Props> = ({
       },
     });
 
-    // setUpdatedAction("");
     setIsEditing(false);
   };
 
