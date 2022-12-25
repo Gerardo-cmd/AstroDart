@@ -52,10 +52,6 @@ const Settings = () => {
         <div>
           <DeleteUserModal />
         </div>
-        <br />
-        <div>
-          <Button color="info" variant="contained" onClick={handleModeChange}>Change mode</Button>
-        </div>
       </div>
     </>
   );

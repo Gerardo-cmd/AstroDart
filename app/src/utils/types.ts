@@ -5,41 +5,35 @@ export const PAGE_TYPES = {
   Settings: "SETTINGS"
 }; 
 
-const categoryValues: (readonly [string, string])[] = [
+const darkCategoryValues: (readonly [string, string])[] = [
   ["Food and Drink", "#38d15b"], // Light Green
   ["Payment", "#05cee8"], // Cyan
   ["Shops", "#ed5361"], // Light Red
-  ["Travel", "#F57C00"], // Light Blue
-  ["Recreation", "#007bff"], // Blue
+  ["Travel", "#F57C00"], // Orange
+  ["Recreation", "#007bff"], // Dark Blue
   ["Transfer", "#7E57C2"], // Purple 
-  ["Restaraunts", "#fafc51"], // Dark Orange
+  ["Restaraunts", "#fafc51"], // Yellow
   ["Healthcare", "#f768df"], // Pink
-  ["Service", "#458bd6"], // Light Yellow 
+  ["Service", "#458bd6"], // Blue
   ["Other", "#757475"], // Light grey
 ];
+
+const lightCategoryValues: (readonly [string, string])[] = [
+  ["Food and Drink", "#06d135"], // Light Green
+  ["Payment", "#02b9d1"], // Cyan
+  ["Shops", "#e63545"], // Light Red
+  ["Travel", "#F57C00"], // Orange
+  ["Recreation", "#007bff"], // Dark Blue
+  ["Transfer", "#7E57C2"], // Purple 
+  ["Restaraunts", "#ffcf0f"], // Light Orange
+  ["Healthcare", "#ff57e3"], // Pink
+  ["Service", "#357ac4"], // Blue
+  ["Other", "#4d4d4d"], // Dark Grey
+];
+
 export const Category = {
   Colors: {
-    Dark: new Map<string, string>(categoryValues), 
-      // PirateKing: colors.blueGrey[300],
-      // Grocery: colors.green[600],
-      // Meal: colors.cyan[500],
-      // Others: colors.deepPurple[400],
-      // Recreation: colors.lightBlue[700],
-      // Shopping: colors.red[600],
-      // Special: '',
-      // Utility: colors.orange[500],
-      // Vehicle: colors.yellow[500],
-    // },
-    Light: new Map<string, string>(categoryValues), 
-    //   PirateKing: '#6c757d',
-    //   Grocery: '#28a745',
-    //   Meal: '#17a2b8',
-    //   Others: '#7E57C2',
-    //   Recreation: '#007bff',
-    //   Shopping: '#dc3545',
-    //   Special: '#343a40',
-    //   Utility: '#F57C00',
-    //   Vehicle: '#ffc107',
-    // },
+    Dark: new Map<string, string>(darkCategoryValues), 
+    Light: new Map<string, string>(lightCategoryValues), 
   },
 };

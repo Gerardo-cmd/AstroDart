@@ -13,10 +13,13 @@ import {
   ListItem, 
   ListItemButton, 
   ListItemText, 
+  Switch, 
   Toolbar, 
   Typography 
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
+import LightModeIcon from '@mui/icons-material/LightMode';
+import DarkModeIcon from '@mui/icons-material/DarkMode';
 import { useTheme } from '@mui/material/styles';
 
 import { useNavigate } from "react-router-dom";
@@ -37,7 +40,7 @@ const navItems = ['Networth', 'Spending', 'Checklist', 'Settings', 'Logout'];
 
 const Menu: React.FC<Props> = ({ page, window }) => {
   const theme = useTheme();
-  const { email, dispatch } = useContext(Context);
+  const { email, lightMode, dispatch } = useContext(Context);
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
@@ -56,25 +59,52 @@ const Menu: React.FC<Props> = ({ page, window }) => {
   };
 
   const drawer = (
-    <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center', background: theme.palette.primary.main, minHeight: '100vh' }}>
-      <Typography variant="h5" sx={{ my: 2, color: 'white' }}>
-        AstroDart
-      </Typography>
-      <Divider />
-      <List>
-        {navItems.map((item) => (
-          <ListItem key={item} disablePadding>
-            <ListItemButton 
-              sx={{ textAlign: 'center' }} 
-              disabled={page?.toLowerCase() === item.toLowerCase()} 
-              onClick={item === "Logout" ? logout : () => navigate(`/${item.toLowerCase()}`)}
-            >
-              <ListItemText primary={item} />
+    <>
+      <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center', background: theme.palette.primary.main }}>
+        <Typography variant="h5" sx={{ my: 2 }}>
+          AstroDart
+        </Typography>
+        <Divider />
+        <List>
+          {navItems.map((item: string, index: number) => {
+            return (
+              <div>
+                <ListItem key={item} disablePadding>
+                  <ListItemButton 
+                    sx={{ textAlign: 'center' }} 
+                    disabled={page?.toLowerCase() === item.toLowerCase()} 
+                    onClick={item === "Logout" ? logout : () => navigate(`/${item.toLowerCase()}`)}
+                  >
+                    <ListItemText primary={item} />
+                  </ListItemButton>
+                </ListItem>
+              </div>
+            );
+          })}
+        </List>
+      </Box>
+      <Box sx={{ textAlign: 'center', background: theme.palette.primary.main, minHeight: '100vh' }}>
+        <List>
+          <ListItem key="switch" disablePadding>
+            <ListItemButton sx={{ textAlign: 'center', justifyContent: 'center', color: theme.palette.info.main}}>
+              {lightMode ? <LightModeIcon /> : <DarkModeIcon />}
+              <Switch 
+                color="error"
+                checked={ lightMode } 
+                onClick={() => {
+                  dispatch({
+                    type: 'SET_STATE',
+                    state: {
+                      lightMode: !lightMode
+                    }
+                  });
+                }} 
+              />
             </ListItemButton>
           </ListItem>
-        ))}
-      </List>
-    </Box>
+        </List>
+      </Box>
+    </>
   );
 
   const container = window !== undefined ? () => window().document.body : undefined;
@@ -110,6 +140,19 @@ const Menu: React.FC<Props> = ({ page, window }) => {
                 {item}
               </Button>
             ))}
+            <Switch 
+              color="error" 
+              checked={ lightMode } 
+              onClick={() => {
+                dispatch({
+                  type: 'SET_STATE',
+                  state: {
+                    lightMode: !lightMode
+                  }
+                });
+              }} 
+            />
+            {lightMode ? <LightModeIcon /> : <DarkModeIcon />}
           </Box>
         </Toolbar>
       </AppBar>

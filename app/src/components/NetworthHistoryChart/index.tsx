@@ -50,7 +50,7 @@ const NetworthHistoryChart: React.FC<Props> = ({ currentNetworth }) => {
       titleTextStyle: { color: theme.typography.body2.color }, 
       textStyle: { color: theme.typography.body2.color }, 
     },
-    colors: lightMode ? ['blue'] : ["#38d15b"] 
+    colors: lightMode ? ['blue'] : ["#05cee8"] 
   };
 
   return (

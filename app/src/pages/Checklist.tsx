@@ -19,7 +19,7 @@ const styles = {
     marginBottom: '30px',
   }),
   paper: css({
-    border: '3px solid #7c4dff',
+    border: '0.5px solid black',
     background: 'white',
   }),
   input: css({
@@ -99,6 +99,7 @@ const Checklist = () => {
     <>
       <Menu page={PAGE_TYPES.Checklist} />
         <div className="container" css={styles.container}>
+          <div className="container">
             <Typography variant="h4" css={styles.header}>Checklist Items</Typography>
             {!userChecklist.length && <Typography css={styles.noItemsMessage}>You don't have any items in your checklist. Click on "Edit" below to add some!</Typography>}
             {userChecklist?.map((item) => {
@@ -112,6 +113,7 @@ const Checklist = () => {
               );
             })}
             <Button color="info" variant="contained" onClick={() => navigate("/checklist/edit")}>Edit</Button>
+          </div>
         </div>
     </>
   );

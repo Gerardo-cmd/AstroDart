@@ -20,7 +20,7 @@ const styles = {
 // Get all categories first, then add the current month's catefories, thencalculate the totals!
 
 //First element will be an array with the date (mm-yyyy) and then each category. Go througheach month and get every category. Then go through each month and ask for all categories even if it doesn't exist in that month (make it 0)
-const getData = (allCategories: string[], monthlySpending: any, transactions: any[]) => {
+const getData = (lightMode: boolean, allCategories: string[], monthlySpending: any, transactions: any[]) => {
   // Get all categories
   const data: any[][] = [["Date"]];
   const headers = data[0].concat(allCategories);
@@ -44,7 +44,7 @@ const getData = (allCategories: string[], monthlySpending: any, transactions: an
   });
 
   // Now for the current month
-  const currentMonth = calculateTotals(allCategories, monthlySpending, transactions);
+  const currentMonth = calculateTotals(lightMode, allCategories, monthlySpending, transactions);
   const currentMonthData: any[] = ["This month"];
 
   allCategories.forEach((category: string) => {
@@ -76,13 +76,13 @@ const getData = (allCategories: string[], monthlySpending: any, transactions: an
 
 const TransactionsBarChart: React.FC = () => {
   const theme = useTheme();
-  const { allCategories, monthlySpending, transactions } = useContext(Context);
+  const { allCategories, lightMode, monthlySpending, transactions } = useContext(Context);
 
   if (Object.keys(monthlySpending).length === 0) {
     return <Typography>You have no data on spending</Typography>
   }
 
-  const data = getData(allCategories, monthlySpending, transactions);
+  const data = getData(lightMode, allCategories, monthlySpending, transactions);
   const options = {
     title: "Spending Per Month", 
     titleTextStyle: { color: theme.typography.body2.color }, 
@@ -103,16 +103,16 @@ const TransactionsBarChart: React.FC = () => {
     }, 
     backgroundColor: theme.palette.background.default, 
     series: {
-      0:{color: Category.Colors['Dark'].get("Food and Drink")},
-      1:{color: Category.Colors['Dark'].get("Payment")},
-      2:{color: Category.Colors['Dark'].get("Shops")},
-      3:{color: Category.Colors['Dark'].get("Travel")},
-      4:{color: Category.Colors['Dark'].get("Recreation")}, 
-      5:{color: Category.Colors['Dark'].get("Transfer")},
-      6:{color: Category.Colors['Dark'].get("Restaraunts")},
-      7:{color: Category.Colors['Dark'].get("Healthcare")},
-      8:{color: Category.Colors['Dark'].get("Service")}, 
-      9:{color: Category.Colors['Dark'].get("Other")}, 
+      0:{color: Category.Colors[lightMode ? 'Light' : 'Dark'].get("Food and Drink")},
+      1:{color: Category.Colors[lightMode ? 'Light' : 'Dark'].get("Payment")},
+      2:{color: Category.Colors[lightMode ? 'Light' : 'Dark'].get("Shops")},
+      3:{color: Category.Colors[lightMode ? 'Light' : 'Dark'].get("Travel")},
+      4:{color: Category.Colors[lightMode ? 'Light' : 'Dark'].get("Recreation")}, 
+      5:{color: Category.Colors[lightMode ? 'Light' : 'Dark'].get("Transfer")},
+      6:{color: Category.Colors[lightMode ? 'Light' : 'Dark'].get("Restaraunts")},
+      7:{color: Category.Colors[lightMode ? 'Light' : 'Dark'].get("Healthcare")},
+      8:{color: Category.Colors[lightMode ? 'Light' : 'Dark'].get("Service")}, 
+      9:{color: Category.Colors[lightMode ? 'Light' : 'Dark'].get("Other")}, 
     }
   };
 

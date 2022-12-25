@@ -9,7 +9,7 @@ import TransactionsPieChart from "../components/TransactionsPieChart";
 import TransactionsBarChart from "../components/TransactionsBarChart";
 import TransactionsTable from "../components/TransactionsTable";
 import TransactionChartsLegend from "../components/TransactionChartsLegend";
-import { CircularProgress, Container, Typography } from '@mui/material';
+import { CircularProgress, Container, Theme, Typography } from '@mui/material';
 import { PAGE_TYPES } from '../utils/types';
 import { useNavigate } from "react-router-dom";
 
@@ -54,10 +54,14 @@ const styles = {
   }), 
   graph: css({
     marginBottom: '10px',
-  })
+  }), 
+  legend: css({
+    marginBottom: '25px'
+  }), 
 };
 
 const Spending: React.FC = () => {
+  const theme = useTheme();
   const navigate = useNavigate();
   const { 
     accountsArray, 
@@ -102,7 +106,7 @@ const Spending: React.FC = () => {
                 <TransactionsBarChart />
               </div>
             </div>
-            <div className="row">
+            <div className="row" css={styles.legend}>
               <TransactionChartsLegend />
             </div>
           </>

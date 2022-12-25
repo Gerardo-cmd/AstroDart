@@ -49,7 +49,7 @@ interface Data {
 
 const TransactionsTable: React.FC = () => {
   const theme = useTheme();
-  const { accountsArray, transactions } = useContext(Context);
+  const { accountsArray, lightMode, transactions } = useContext(Context);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -79,7 +79,7 @@ const TransactionsTable: React.FC = () => {
   });
 
   return (
-    <Paper sx={{ width: '100%', overflow: 'hidden', background: theme.palette.primary.main }}>
+    <Paper sx={{ width: '100%', overflow: 'hidden', background: theme.palette.background.paper, border: `1px solid ${lightMode ? 'black' : 'white' }` }}>
       <TableContainer sx={{ maxHeight: 440, background: theme.palette.primary.main }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>

@@ -17,12 +17,12 @@ const styles = {
   })
 };
 
-export const calculateTotals = (allCategories: string[], monthlySpending: any, transactions: any[]) => {
+export const calculateTotals = (lightMode: boolean, allCategories: string[], monthlySpending: any, transactions: any[]) => {
   const data: any[] = [["Category", "Amount"]];
   const categories = new Map();
   // Go through and get every category/amount from transactions there is into categories map.
   transactions.forEach((transaction) => {
-    const category = Category?.Colors["Dark"]?.has(transaction.category[0]) ? transaction.category[0] : "Other";
+    const category = Category?.Colors[lightMode ? "Light" : "Dark"]?.has(transaction.category[0]) ? transaction.category[0] : "Other";
     // const category = transaction.category[0] === "Payment" && transaction.category.length > 1 ? transaction.category[1] : transaction.category[0];
     if (categories.has(category))  {
       const oldValue = categories.get(category);
@@ -53,7 +53,7 @@ export const calculateTotals = (allCategories: string[], monthlySpending: any, t
   return data;
 };
 
-const getColors = (data: any) => {
+const getColors = (lightMode: boolean, data: any) => {
   const colors: string[] = [];
   data.forEach((row: any[], index: number) => {
     if (index !== 0) {
@@ -68,10 +68,10 @@ const getColors = (data: any) => {
 
 const TransactionsPieChart: React.FC = () => {
   const theme = useTheme();
-  const { allCategories, monthlySpending, transactions } = useContext(Context);
+  const { allCategories, lightMode, monthlySpending, transactions } = useContext(Context);
 
-  const data = calculateTotals(allCategories, monthlySpending, transactions);
-  const colors = getColors(data);
+  const data = calculateTotals(lightMode, allCategories, monthlySpending, transactions);
+  const colors = getColors(lightMode, data);
   const date = new Date();
   const currentDate = date.getMonth() + 1 + "-" + date.getFullYear();
   const options = {

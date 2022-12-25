@@ -29,8 +29,8 @@ const styles = {
   }),
   paper: css({
     border: '0.5px solid black', 
-    padding: '10px',
-    marginBottom: '10px'
+    marginBottom: '10px', 
+    textAlign: 'left'
   }),
   input: css({
     margin: '50px 0px',
@@ -41,7 +41,7 @@ const Checklist = () => {
   const theme = useTheme();
   const navigate = useNavigate();
   const { email, checklist, userToken, dispatch } = useContext(Context);
-  const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [isCreating, setIsCreating] = useState<boolean>(false);
   const [newAction, setNewAction] = useState<string>("");
   const [hasError, setHasError] = useState<boolean>(false);
   const [errorText, setErrorText] = useState<string>("");
@@ -87,7 +87,7 @@ const Checklist = () => {
     });
 
     setNewAction("");
-    setIsEditing(false);
+    setIsCreating(false);
   };
 
   const handleDelete = async (itemName: string) => {
@@ -117,58 +117,60 @@ const Checklist = () => {
   return (
     <>
       <Menu page={PAGE_TYPES.Checklist} />
-      <div className="container-sm" css={styles.container}>
-        <Typography variant="h4" css={styles.header}>Editing Checklist Items</Typography>
-        {userChecklist?.map((item) => {
-          return (
-            <ChecklistItem 
-              key={`${item[0]}`} 
-              action={item[0]} 
-              done={item[1]["BOOL"]}  
-              disabled
-              onDelete={handleDelete}
-            />
-          );
-        })}
-        {isEditing ? 
-          (
-            <Paper css={styles.paper}>
-              <Checkbox color="success" checked={false} disabled />
-              <TextField 
-                color="info" 
-                label="Action"
-                error={hasError}
-                helperText={errorText}
-                multiline
-                value={newAction}
-                onChange={(e) => {
-                  e.preventDefault();
-                  setHasError(false);
-                  setErrorText("");
-                  setNewAction(e.target.value);
-                }}
-                id="action-input" 
-                name="action" 
-                sx={{
-                  "& .MuiInputBase-root": {
-                      color: theme.typography.body1.color
-                  }
-                }} 
+      <div className="container" css={styles.container}>
+        <div className="container">
+          <Typography variant="h4" css={styles.header}>Editing Checklist Items</Typography>
+          {userChecklist?.map((item) => {
+            return (
+              <ChecklistItem 
+                key={`${item[0]}`} 
+                action={item[0]} 
+                done={item[1]["BOOL"]}  
+                disabled
+                onDelete={handleDelete} 
               />
-              <Button color="info" onClick={handleSave}><CheckIcon /></Button>
-              <Button color="info" onClick={() => {
-                setNewAction("");
-                setIsEditing(false);
-              }}><DeleteIcon /></Button>
-            </Paper>
-          ) 
-          : 
-          ""
-        }
-        <Button color="info" variant="contained" disabled={isEditing} onClick={() => setIsEditing(true)}>Add</Button>
-        <br />
-        <br />
-        <Button color="info" variant="contained" onClick={handleExit}>Exit</Button>
+            );
+          })}
+          {isCreating ? 
+            (
+              <Paper css={styles.paper}>
+                <Checkbox color="success" checked={false} disabled />
+                <TextField 
+                  color="info" 
+                  label="Action"
+                  error={hasError}
+                  helperText={errorText}
+                  multiline
+                  value={newAction}
+                  onChange={(e) => {
+                    e.preventDefault();
+                    setHasError(false);
+                    setErrorText("");
+                    setNewAction(e.target.value);
+                  }}
+                  id="action-input" 
+                  name="action" 
+                  sx={{
+                    "& .MuiInputBase-root": {
+                        color: theme.typography.body1.color
+                    }
+                  }} 
+                />
+                <Button color="info" onClick={handleSave}><CheckIcon /></Button>
+                <Button color="info" onClick={() => {
+                  setNewAction("");
+                  setIsCreating(false);
+                }}><DeleteIcon /></Button>
+              </Paper>
+            ) 
+            : 
+            ""
+          }
+          <Button color="info" variant="contained" disabled={isCreating} onClick={() => setIsCreating(true)}>Add</Button>
+          <br />
+          <br />
+          <Button color="info" variant="contained" onClick={handleExit}>Exit</Button>
+        </div>
       </div>
     </>
   );
