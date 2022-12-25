@@ -103,7 +103,7 @@ const ChecklistItem: React.FC<Props> = ({
 
   if (isEditing) {
     return (
-      <Paper css={styles.paper}>
+      <Paper css={styles.paper} style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
         <Checkbox color="success" checked={done} disabled />
         <TextField 
           color="info" 
@@ -140,19 +140,24 @@ const ChecklistItem: React.FC<Props> = ({
   return !!onDelete ? 
     (
       <>
-        <Paper className="row" css={styles.paper}>
-          <Checkbox className="col-sm" color="info" checked={done} disabled={disabled} onChange={handleChange} />
-          <Typography className="col-sm">
-            {action}
+        <Paper className="row" css={styles.paper} style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+          <div className="col-md col-2">
             <Button color="info" onClick={() => setIsEditing(true)}>
               <EditIcon />
             </Button>
             <Button color="info" onClick={handleDelete}>
               <DeleteIcon />
             </Button>
+          </div>
+          <Checkbox className="col-md col-2" color="info" checked={done} disabled={disabled} onChange={handleChange} />
+          <Typography className="col-md col-6">
+            {action}
           </Typography>
-          <div className="col-sm" />
-          <div className="col-sm" />
+          <div className="col-lg" />
+          <div className="col-lg" />
+          <div className="col-lg" />
+          <div className="col-lg" />
+          <div className="col-lg" />
         </Paper>
       </>
     )

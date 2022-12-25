@@ -68,17 +68,15 @@ const Menu: React.FC<Props> = ({ page, window }) => {
         <List>
           {navItems.map((item: string, index: number) => {
             return (
-              <div>
-                <ListItem key={item} disablePadding>
-                  <ListItemButton 
-                    sx={{ textAlign: 'center' }} 
-                    disabled={page?.toLowerCase() === item.toLowerCase()} 
-                    onClick={item === "Logout" ? logout : () => navigate(`/${item.toLowerCase()}`)}
-                  >
-                    <ListItemText primary={item} />
-                  </ListItemButton>
-                </ListItem>
-              </div>
+              <ListItem key={item} disablePadding>
+                <ListItemButton 
+                  sx={{ textAlign: 'center' }} 
+                  disabled={page?.toLowerCase() === item.toLowerCase()} 
+                  onClick={item === "Logout" ? logout : () => navigate(`/${item.toLowerCase()}`)}
+                >
+                  <ListItemText primary={item} />
+                </ListItemButton>
+              </ListItem>
             );
           })}
         </List>
