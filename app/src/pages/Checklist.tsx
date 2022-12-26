@@ -3,8 +3,10 @@
 import { css } from "@emotion/react";
 import { useContext } from 'react';
 import { useNavigate } from 'react-router';
-import { Button, Typography } from '@mui/material';
+import { Button, Paper, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
+import type { Theme } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
 import Menu from '../components/Menu';
 import Context from "../context";
 import ChecklistItem from "../components/ChecklistItem";
@@ -27,10 +29,32 @@ const styles = {
   }),
   noItemsMessage: css({
     marginBottom: '12px'
+  }), 
+  stickyFooter: (theme: Theme) => css({
+    display: 'flex', 
+    position: 'sticky',
+    bottom: 0,
+    zIndex: 9, 
+    padding: '20px', 
+    justifyContent: 'center',
+    alignItems: 'center', 
+    width: '200px', 
+    marginLeft: 'auto', 
+    marginRight: 'auto', 
+    background: theme.palette.background.default, 
+    borderLeft: `0.25px solid ${theme.palette.info.main}`, 
+    borderRight: `0.25px solid ${theme.palette.info.main}`, 
+    borderTop: `0.25px solid ${theme.palette.info.main}`
+  }),
+  footerButton: css({
+    margin: '0px 10px', 
+    width: '40px',
+    height: '30px'
   })
 };
 
 const Checklist = () => {
+  const theme = useTheme();
   const navigate = useNavigate();
   const { email, checklist, userToken, dispatch } = useContext(Context);
 
@@ -112,7 +136,9 @@ const Checklist = () => {
                 />
               );
             })}
-            <Button color="info" variant="contained" onClick={() => navigate("/checklist/edit")}>Edit</Button>
+            <Paper css={styles.stickyFooter(theme)}>
+              <Button css={styles.footerButton} color="info" variant="contained" onClick={() => navigate("/checklist/edit")}><EditIcon sx={{fontSize: 'medium'}} />&nbsp;Edit&nbsp;</Button>
+            </Paper>
           </div>
         </div>
     </>

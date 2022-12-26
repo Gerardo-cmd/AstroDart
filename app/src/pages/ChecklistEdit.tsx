@@ -19,6 +19,9 @@ import {
   TextField, 
   Typography
 } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
+import CloseIcon from '@mui/icons-material/Close';
+import type { Theme } from '@mui/material';
 
 const styles = {
   container: css({
@@ -34,6 +37,27 @@ const styles = {
   }),
   input: css({
     margin: '50px 0px',
+  }), 
+  stickyFooter: (theme: Theme) => css({
+    display: 'flex', 
+    position: 'sticky',
+    bottom: 0,
+    zIndex: 9, 
+    padding: '20px', 
+    justifyContent: 'center',
+    alignItems: 'center', 
+    width: '200px', 
+    marginLeft: 'auto', 
+    marginRight: 'auto', 
+    background: theme.palette.background.default, 
+    borderLeft: `0.25px solid ${theme.palette.info.main}`, 
+    borderRight: `0.25px solid ${theme.palette.info.main}`, 
+    borderTop: `0.25px solid ${theme.palette.info.main}`
+  }),
+  footerButton: css({
+    margin: '0px 10px', 
+    width: '40px',
+    height: '30px'
   })
 };
 
@@ -133,7 +157,7 @@ const Checklist = () => {
           })}
           {isCreating ? 
             (
-              <Paper css={styles.paper}>
+              <Paper id="new" css={styles.paper} style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
                 <Checkbox color="success" checked={false} disabled />
                 <TextField 
                   color="info" 
@@ -166,10 +190,10 @@ const Checklist = () => {
             : 
             ""
           }
-          <Button color="info" variant="contained" disabled={isCreating} onClick={() => setIsCreating(true)}>Add</Button>
-          <br />
-          <br />
-          <Button color="info" variant="contained" onClick={handleExit}>Exit</Button>
+          <Paper css={styles.stickyFooter(theme)}>
+            <Button css={styles.footerButton} color="info" href="#new" target="_self" rel="noreferrer" variant="contained" disabled={isCreating} onClick={() => setIsCreating(true)}><AddIcon />Add&nbsp;</Button>
+            <Button css={styles.footerButton} color="info" variant="contained" onClick={handleExit}><CloseIcon />Exit&nbsp;</Button>
+          </Paper>
         </div>
       </div>
     </>

@@ -49,7 +49,6 @@ type Props = {
 }
 
 const drawerWidth = 240;
-const navItems = ['Networth', 'Spending', 'Checklist'];
 
 const Menu: React.FC<Props> = ({ page, window }) => {
   const theme = useTheme();
@@ -121,19 +120,6 @@ const Menu: React.FC<Props> = ({ page, window }) => {
         </Typography>
         <Divider />
         <List>
-          {/* {navItems.map((item: string, index: number) => {
-            return (
-              <ListItem key={item} disablePadding>
-                <ListItemButton 
-                  sx={{ textAlign: 'center' }} 
-                  disabled={page?.toLowerCase() === item.toLowerCase()} 
-                  onClick={item === "Logout" ? logout : () => navigate(`/${item.toLowerCase()}`)}
-                >
-                  <ListItemText primary={item} />
-                </ListItemButton>
-              </ListItem>
-            );
-          })} */}
           <ListItem key="networth" disablePadding>
             <ListItemButton 
               color="info"

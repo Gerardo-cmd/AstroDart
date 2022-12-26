@@ -62,9 +62,6 @@ const LoginPage: React.FC = () => {
   const [errorText, setErrorText] = useState<string>("");
 
   // TODO: If the user links a duplicate bank account, notify and nothing happens (Need to add account numer and routing number for that?)
-  // TODO: Refactor cron functions into another folder 
-  // TODO: Have a dropdown for settings with the option for light mode, account configuration, account settings, and log out
-  // TODO: Make Edit/Add Checklist a sticky footer
   // TODO: Finish styling the app
   // TODO: Make checklist items draggable. Would have to change the keys in db to be index numbers
   // TODO: Add tanstack

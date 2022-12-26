@@ -1,9 +1,16 @@
 /** @jsxImportSource @emotion/react */
 
 import { css } from "@emotion/react";
-import { useState, useEffect, useContext } from 'react';
+import { useState, useContext } from 'react';
 import Context from "../../context";
-import { Button, Checkbox, Container, Paper, TextField, Typography, useTheme } from '@mui/material';
+import { 
+  Button, 
+  Checkbox, 
+  Paper, 
+  TextField, 
+  Typography, 
+  useTheme
+ } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
