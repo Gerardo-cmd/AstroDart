@@ -7,6 +7,8 @@
     "@emotion/styled": "^11.10.5",
     "@mui/icons-material": "^5.10.16",
     "@mui/material": "^5.10.15",
+    "@mui/utils": "^5.11.2",
+    "@tanstack/react-query": "^4.20.4",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -15,6 +17,7 @@
     "@types/react": "^18.0.25",
     "@types/react-dom": "^18.0.9",
     "bootstrap": "^5.2.3",
+    "lodash": "^4.17.21",
     "plaid": "^12.1.0",
     "plaid-threads": "^11.5.0",
     "react": "^18.2.0",
@@ -51,5 +54,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.191"
   }
 }

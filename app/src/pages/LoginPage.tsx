@@ -63,8 +63,7 @@ const LoginPage: React.FC = () => {
 
   // TODO: If the user links a duplicate bank account, notify and nothing happens (Need to add account numer and routing number for that?)
   // TODO: Finish styling the app
-  // TODO: Make checklist items draggable. Would have to change the keys in db to be index numbers
-  // TODO: Add tanstack
+  // TODO: Make checklist items draggable. Would have to change the keys in db to be index numbers\
   // TODO: Make BE serverless with lambda functons
   // OPTIONAL: Implement email authentication (SendGrid)
 

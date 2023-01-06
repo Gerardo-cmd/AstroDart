@@ -12,6 +12,7 @@ import Context from "../context";
 import ChecklistItem from "../components/ChecklistItem";
 import { PAGE_TYPES } from '../utils/types'
 import { getUserChecklist } from "../utils/DataHandlers";
+import updateChecklist from "../utils/Endpoints/UpdateChecklist";
 
 const styles = {
   container: css({
@@ -64,58 +65,17 @@ const Checklist = () => {
 
   const userChecklist = getUserChecklist(checklist);
 
-  const handleChange = (itemName: string, newValue: boolean) => {
+  const handleChange = async (itemName: string, newValue: boolean) => {
     let newChecklist = checklist;
     // @ts-ignore
     newChecklist[itemName] = { BOOL: newValue };
+
+    const data = await updateChecklist(email, newChecklist);
     dispatch({
       type: "SET_STATE",
       state: {
         checklist: newChecklist
       },
-    });
-
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('Accept', 'application/json');
-
-    const data = {
-      email: email.trim().toLowerCase(),
-      checklist
-    };
-
-    fetch('http://localhost:5000/api/checklist', {
-      method: 'POST',
-      mode: 'cors',
-      headers: headers,
-      body: JSON.stringify(data),
-    })
-    .then(response => {
-      if (response.status === 200) {
-        return response.json();
-      }
-      if (response.status === 400) {
-        throw new Error("400");
-      }
-      if (response.status === 500) {
-        throw new Error("500");
-      }
-      throw new Error("Unrecongized status code");
-    })
-    .then(data => {
-        console.log('Success:', data.msg);
-    })
-    .catch((error) => {
-      if (error === "400") {
-        console.error("Error: We don't have all the necessary information! We need both the email and the checklist.");
-        return;
-      }
-      if (error === "500") {
-        console.error("Error: Something went wrong in the server. Please try again later.");
-        return;
-      }
-      console.error('Error:', error);
-      return;
     });
   };
 

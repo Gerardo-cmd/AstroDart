@@ -5,6 +5,19 @@ export const PAGE_TYPES = {
   Settings: "SETTINGS"
 }; 
 
+export const Categories = [
+  "Food and Drink", 
+  "Payment", 
+  "Shops", 
+  "Travel", 
+  "Recreation", 
+  "Transfer", 
+  "Restaraunts", 
+  "Healthcare", 
+  "Service", 
+  "Other" 
+];
+
 const darkCategoryValues: (readonly [string, string])[] = [
   ["Food and Drink", "#38d15b"], // Light Green
   ["Payment", "#05cee8"], // Cyan

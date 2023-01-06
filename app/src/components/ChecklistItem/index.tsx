@@ -110,7 +110,7 @@ const ChecklistItem: React.FC<Props> = ({
   if (isEditing) {
     return (
       <Paper css={styles.paper} style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-        <Checkbox color="success" checked={done} disabled />
+        <Checkbox color="info" checked={done} disabled />
         <TextField 
           color="info" 
           label="Action"
