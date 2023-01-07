@@ -29,7 +29,7 @@ import getTransactions from "../utils/Endpoints/GetTransactions";
 
 const styles = {
   container: css({
-    paddingTop: '4rem',
+    paddingTop: '5rem',
     display: 'flex',
     justifyContent: 'center',
     flexDirection: 'column',
@@ -38,13 +38,13 @@ const styles = {
   header: css({
     marginBottom: '24px',
   }),
-  paper:  () => css({
-    border: '0.5px solid black',
+  paper:  (lightMode: boolean) => css({
+    border: lightMode ? '0.5px solid black' : '0.5px solid white', 
     padding: '24px',
     marginBottom: '24px'
   }),
   input: (theme: Theme) => css({
-    margin: '24px 0px', 
+    margin: '12px 0px', 
     color: theme.typography.body2.color 
   }),
   error: css({
@@ -54,18 +54,18 @@ const styles = {
 
 const LoginPage: React.FC = () => {
   const theme = useTheme();
-  const { dispatch } = useContext(Context);
+  const { dispatch, lightMode } = useContext(Context);
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [errorText, setErrorText] = useState<string>("");
 
-  // TODO: If the user links a duplicate bank account, notify and nothing happens (Need to add account numer and routing number for that?)
   // TODO: Finish styling the app
-  // TODO: Make checklist items draggable. Would have to change the keys in db to be index numbers\
+  // TODO: Make checklist items draggable. Would have to change the keys in db to be index numbers
+  // TODO: If the user links a duplicate bank account, notify and nothing happens (Need to add account numer and routing number for that?)
   // TODO: Make BE serverless with lambda functons
-  // OPTIONAL: Implement email authentication (SendGrid)
+  // OPTIONAL: Implement email authentication (SendGrid?)
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -117,7 +117,7 @@ const LoginPage: React.FC = () => {
   return (
     <Container css={styles.container}>
       <Typography variant="h2" css={styles.header}>AstroDart</Typography>
-      <Paper css={styles.paper}>
+      <Paper css={styles.paper(lightMode)}>
         <Box
           color="primary" 
           component="form"
@@ -172,7 +172,7 @@ const LoginPage: React.FC = () => {
               <CircularProgress color="info" /> 
               : 
               <Input 
-                color="secondary" 
+                color="info" 
                 type="submit" 
                 value="Login" 
                 disabled={email?.trim() === "" || password?.trim() === ""} 

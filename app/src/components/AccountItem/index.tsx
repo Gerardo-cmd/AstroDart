@@ -1,8 +1,10 @@
 /** @jsxImportSource @emotion/react */
 
 import { css } from "@emotion/react";
-import {Paper, Theme, Typography } from '@mui/material';
-import { useTheme } from '@mui/material/styles'
+import React, { useContext } from 'react';
+import { Paper, Theme, Typography } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
+import Context from "../../context";
 
 type Props = {
   name: string;
@@ -11,8 +13,8 @@ type Props = {
 }
 
 const styles = {
-  paper: (theme: Theme) => css({
-    border: '0.5px solid black',
+  paper: (theme: Theme, lightMode: boolean) => css({
+    border: lightMode ? '0.5px solid black' : '0.5px solid white',
     background: theme.palette.primary.main,
     padding: '10px',
     marginBottom: '10px'
@@ -25,12 +27,14 @@ const AccountItem: React.FC<Props> = ({
   type
 }) => {
   const theme = useTheme();
+  const { lightMode } = useContext(Context);
+  
   const isLiability = type === "credit" || type === "loan";
   const isNegative = isLiability ? "-" : "";
   
   return (
     <>
-      <Paper css={styles.paper(theme)}>
+      <Paper css={styles.paper(theme, lightMode)}>
         <Typography variant="body1">{`${name}: ${isNegative}$${balance}`}</Typography>
       </Paper>
     </>

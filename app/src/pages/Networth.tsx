@@ -338,7 +338,7 @@ const Networth: React.FC = () => {
     <>
       <Menu page={PAGE_TYPES.Networth} />
       <Container maxWidth="lg" css={styles.container}> 
-        <Typography variant="h4">Networth: {networthIsNegative && "-"}${ (networthIsNegative) ? networth * -1 : networth }</Typography>
+        <Typography variant="h3">Networth: {networthIsNegative && "-"}${ (networthIsNegative) ? networth * -1 : networth }</Typography>
         <br />
         <div css={styles.graph}>
           <NetworthHistoryChart currentNetworth={networth} />

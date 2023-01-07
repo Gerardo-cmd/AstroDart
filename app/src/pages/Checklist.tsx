@@ -84,7 +84,7 @@ const Checklist = () => {
       <Menu page={PAGE_TYPES.Checklist} />
         <div className="container" css={styles.container}>
           <div className="container">
-            <Typography variant="h4" css={styles.header}>Checklist Items</Typography>
+            <Typography variant="h3" css={styles.header}>Checklist</Typography>
             {!userChecklist.length && <Typography css={styles.noItemsMessage}>You don't have any items in your checklist. Click on "Edit" below to add some!</Typography>}
             {userChecklist?.map((item) => {
               return (

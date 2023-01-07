@@ -20,7 +20,7 @@ import createUser from "../utils/Endpoints/CreateUser";
 
 const styles = {
   container: css({
-    paddingTop: '4rem',
+    paddingTop: '5rem',
     display: 'flex',
     justifyContent: 'center',
     flexDirection: 'column',
@@ -29,13 +29,13 @@ const styles = {
   header: css({
     marginBottom: '24px',
   }),
-  paper: css({
-    border: '0.5px solid black',
+  paper: (lightMode: boolean) => css({
+    border: lightMode ? '0.5px solid black' : '0.5px solid white', 
     padding: '24px',
     marginBottom: '24px'
   }),
   input: css({
-    margin: '24px 0px',
+    margin: '12px 0px',
   }),
   error: css({
     color: 'red',
@@ -44,7 +44,7 @@ const styles = {
 
 const SignUpPage: React.FC = () => {
   const theme = useTheme();
-  const { dispatch } = useContext(Context);
+  const { dispatch, lightMode } = useContext(Context);
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
   const [email, setEmail] = useState<string>("");
@@ -100,7 +100,7 @@ const SignUpPage: React.FC = () => {
   return (
     <Container css={styles.container}>
       <Typography variant="h2" css={styles.header}>AstroDart</Typography>
-      <Paper css={styles.paper}>
+      <Paper css={styles.paper(lightMode)}>
         <Box
           component="form"
           sx={{
@@ -214,6 +214,7 @@ const SignUpPage: React.FC = () => {
               <CircularProgress color="info" /> 
               : 
               <Input 
+                color="info" 
                 type="submit" 
                 value="Create Account" 
                 disabled={ 

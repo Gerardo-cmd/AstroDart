@@ -4,7 +4,6 @@ import { css } from "@emotion/react";
 import { useContext } from 'react';
 import { useNavigate } from "react-router-dom";
 import { Button, Typography } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
 import Context from "../context";
 import Menu from '../components/Menu';
 import DeleteUserModal from "../components/DeleteUserModal";
@@ -31,20 +30,11 @@ const Settings = () => {
     }),
   };
 
-  const handleModeChange = () => {
-    dispatch({
-      type: 'SET_STATE',
-      state: {
-        lightMode: !lightMode
-      }
-    });
-  };
-
   return (
     <>
       <Menu page={PAGE_TYPES.Settings} />
       <div className="container" css={styles.container}>
-        <Typography variant="h4" css={styles.header}>Settings</Typography>
+        <Typography variant="h3" css={styles.header}>Settings</Typography>
         <div>
           <Button color="info" variant="contained" onClick={() => navigate("/deleteItems")}>Unlink Accounts</Button>
         </div>

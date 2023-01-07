@@ -196,7 +196,7 @@ const Menu: React.FC<Props> = ({ page, window }) => {
 
   return (
     <Box sx={{ display: 'flex' }}>
-      <AppBar component="nav">
+      <AppBar component="nav" sx={{paddingTop: '5px', paddingBottom: '5px'}}>
         <Toolbar>
           <IconButton
             color="inherit"

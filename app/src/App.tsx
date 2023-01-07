@@ -3,7 +3,7 @@
 import React, { useContext } from 'react';
 import { css } from '@emotion/react'
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Theme, useTheme } from "@mui/material"
+import { Theme} from "@mui/material"
 import Context from "./context";
 import LoginPage from './pages/LoginPage';
 import Networth from './pages/Networth';
@@ -26,7 +26,6 @@ const lightTheme = createTheme({
       main: '#fffffd'
     },
     secondary: {
-      // main: '#FBF4E2'
       main: '#000000' 
     },
     info: {
@@ -70,7 +69,7 @@ const lightTheme = createTheme({
 const darkTheme = createTheme({
   palette: {
     primary: {
-      main: '#403f3f'
+      main: '#2f3136'
     },
     secondary: {
       main: '#000000' 
@@ -82,8 +81,8 @@ const darkTheme = createTheme({
       main: '#f53d3d'
     }, 
     background: {
-      default: '#242323', 
-      paper: '#403f3f'
+      default: '#202225', 
+      paper: '#2f3136'
     }, 
   },
   typography: {
@@ -116,7 +115,6 @@ const darkTheme = createTheme({
 
 const styles = {
   basicLayout: (theme: Theme) => css({
-    // background: '#e8eaf6',
     background: theme.palette.background.default, 
     color: theme.typography.body1.color,
     minHeight: '100vh'
@@ -124,7 +122,6 @@ const styles = {
 };
 
 const App: React.FC = () => {
-  // const theme = useTheme();
   const { lightMode } = useContext(Context);
 
   return (

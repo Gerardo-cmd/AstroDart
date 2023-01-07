@@ -141,8 +141,6 @@ const ChecklistItem: React.FC<Props> = ({
     )
   }
 
-
-
   return !!onDelete ? 
     (
       <>

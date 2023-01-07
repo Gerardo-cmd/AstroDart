@@ -90,7 +90,7 @@ const Spending: React.FC = () => {
     <>
       <Menu page={PAGE_TYPES.Spending} />
       <div className="container-lg" css={styles.container}> 
-        <Typography variant="h4">Spending</Typography>
+        <Typography variant="h3">Spending</Typography>
         <br />
         {userHasNoAccounts ? 
           <Typography variant="h5" css={styles.noAccountsMessage}>
