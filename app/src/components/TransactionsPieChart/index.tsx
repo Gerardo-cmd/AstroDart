@@ -4,11 +4,9 @@ import { css } from "@emotion/react";
 import React, { useContext } from "react";
 import { Chart } from "react-google-charts";
 import { CircularProgress } from "@mui/material";
-import type { Theme } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import Context from "../../context";
 
-import { getAllCategories } from "../../utils/DataHandlers";
 import { Category } from "../../utils/types";
 
 const styles = {
@@ -23,7 +21,6 @@ export const calculateTotals = (lightMode: boolean, allCategories: string[], mon
   // Go through and get every category/amount from transactions there is into categories map.
   transactions.forEach((transaction) => {
     const category = Category?.Colors[lightMode ? "Light" : "Dark"]?.has(transaction.category[0]) ? transaction.category[0] : "Other";
-    // const category = transaction.category[0] === "Payment" && transaction.category.length > 1 ? transaction.category[1] : transaction.category[0];
     if (categories.has(category))  {
       const oldValue = categories.get(category);
       categories.set(category, oldValue + transaction.amount);
@@ -58,9 +55,8 @@ const getColors = (lightMode: boolean, data: any) => {
   data.forEach((row: any[], index: number) => {
     if (index !== 0) {
       const category = row[0];
-      const amount = row[1];
       // @ts-ignore
-      colors.push(Category?.Colors['Dark']?.get(category));
+      colors.push(Category?.Colors[lightMode ? 'Light' : 'Dark']?.get(category));
     }
   });
   return colors;

@@ -7,7 +7,6 @@ import { CircularProgress, Typography } from "@mui/material";
 import { useTheme } from '@mui/material/styles';
 
 import Context from "../../context";
-import { getAllCategories } from "../../utils/DataHandlers";
 import { calculateTotals } from "../TransactionsPieChart";
 import { Category } from "../../utils/types";
 
@@ -16,8 +15,6 @@ const styles = {
     fontWeight: 'bold' 
   })
 };
-
-// Get all categories first, then add the current month's catefories, thencalculate the totals!
 
 //First element will be an array with the date (mm-yyyy) and then each category. Go througheach month and get every category. Then go through each month and ask for all categories even if it doesn't exist in that month (make it 0)
 const getData = (lightMode: boolean, allCategories: string[], monthlySpending: any, transactions: any[]) => {

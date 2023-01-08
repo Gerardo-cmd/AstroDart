@@ -61,6 +61,9 @@ const styles = {
   accordion: (theme: Theme) => css({
     background: theme.palette.primary.main, 
     color: theme.typography.body2.color 
+  }), 
+  networthHeader: (lightMode: boolean) => css({
+    color: lightMode ? 'black' : 'white'
   })
 };
 
@@ -99,6 +102,7 @@ const Networth: React.FC = () => {
     investmentAccountsArray, 
     email, 
     items, 
+    lightMode, 
     linkToken, 
     userToken, 
     dispatch 
@@ -356,7 +360,7 @@ const Networth: React.FC = () => {
                   transformDuration: '0s'
                 }}
               >
-                <Typography variant="h6">Cash Accounts (${cashNetworth})</Typography>
+                <Typography variant="h6" css={styles.networthHeader(lightMode)}>Cash Accounts (${cashNetworth})</Typography>
               </AccordionSummary>
               <AccordionDetails>
                 {!!cashAccountsArray.length && (
@@ -387,10 +391,10 @@ const Networth: React.FC = () => {
                 id="panel1a-header"
               >
                 {creditNetworth === 0 ? 
-                  <Typography variant="h6">Credit Card Accounts (${creditNetworth})</Typography>
+                  <Typography variant="h6" css={styles.networthHeader(lightMode)}>Credit Card Accounts (${creditNetworth})</Typography>
                 :
                   // @ts-ignore
-                  <Typography variant="h6">Credit Card Accounts (-${creditNetworth * -1})</Typography>
+                  <Typography variant="h6" css={styles.networthHeader(lightMode)}>Credit Card Accounts (-${creditNetworth * -1})</Typography>
                 }
               </AccordionSummary>
               <AccordionDetails>
@@ -422,10 +426,10 @@ const Networth: React.FC = () => {
                 id="panel1a-header"
               >
                 {loanNetworth === 0 ? 
-                  <Typography variant="h6">Loan Accounts (${loanNetworth})</Typography>
+                  <Typography variant="h6" css={styles.networthHeader(lightMode)}>Loan Accounts (${loanNetworth})</Typography>
                 :
                   // @ts-ignore
-                  <Typography variant="h6">Loan Accounts (-${loanNetworth * -1})</Typography>
+                  <Typography variant="h6" css={styles.networthHeader(lightMode)}>Loan Accounts (-${loanNetworth * -1})</Typography>
                 }
               </AccordionSummary>
               <AccordionDetails>
@@ -455,7 +459,7 @@ const Networth: React.FC = () => {
                 aria-controls="panel1a-content"
                 id="panel1a-header"
               >
-                <Typography variant="h6">Investment Accounts (${investmentNetworth})</Typography>
+                <Typography variant="h6" css={styles.networthHeader(lightMode)}>Investment Accounts (${investmentNetworth})</Typography>
               </AccordionSummary>
               <AccordionDetails>
                 {!!investmentAccountsArray.length && (

@@ -1,3 +1,6 @@
+/** @jsxImportSource @emotion/react */
+
+import { css } from "@emotion/react";
 import React, { useContext } from 'react';
 import { isArray } from "lodash";
 import FormGroup from '@mui/material/FormGroup';
@@ -16,7 +19,7 @@ import {
   MenuItem, 
   OutlinedInput, 
   Paper, 
-  TextField 
+  Typography 
 } from '@mui/material';
 import type { Theme } from '@mui/material';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
@@ -74,15 +77,6 @@ interface FilterObject {
   otherFilterOn: boolean; 
 };
 
-// const sortingOptions = [
-//   {
-//     value: 'Alphabetically (Name)'
-//   },
-//   {
-//     value: 'Amount'
-//   }
-// ];
-
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -102,7 +96,7 @@ const hexToRgb = (hex: string | undefined) => {
   var b = bigint & 255;
 
   return "rgb(" + r + "," + g + "," + b + ",0.25)";
-}
+};
 
 const getStyles = (category: string, filterValues: readonly string[], theme: Theme, lightMode: boolean) => {
   return {
@@ -115,15 +109,20 @@ const getStyles = (category: string, filterValues: readonly string[], theme: The
       ? `${Category?.Colors[lightMode ? 'Light' : 'Dark']?.get(category) ? hexToRgb(Category?.Colors[lightMode ? 'Light' : 'Dark']?.get(category)?.slice(1)) : ""}`
       : '', 
   };
-}
+};
+
+const styles = {
+  noTransactionsMessage: css({
+    marginTop: '12px', 
+    color: 'white'
+  })
+};
 
 const TransactionsTable: React.FC = () => {
   const theme = useTheme();
   const { accountsArray, lightMode, transactions } = useContext(Context);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  // const [search, setSearch] = React.useState<string>("");
-  // const [sortBy, setSortBy] = React.useState<String>("Income");
   const [filter, setFilter] = React.useState<FilterObject>({
     foodanddrinkFilterOn: false, 
     paymentFilterOn: false, 
@@ -164,15 +163,6 @@ const TransactionsTable: React.FC = () => {
   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
-  };
-
-  const handleSortingChange:((event: React.ChangeEvent<HTMLInputElement>) => void) = (event: React.ChangeEvent<HTMLInputElement>) => {
-    // setSortBy(event.target.value);
-  }
-
-  const handleSearchChange: ((event: React.ChangeEvent<HTMLInputElement>) => void) = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log("Changing search to " + event.target.value.trim());
-    // setSearch(event.target.value.trim());
   };
 
   const changeFilter = (options: string[]) => {
@@ -245,6 +235,12 @@ const TransactionsTable: React.FC = () => {
     }
   };
 
+  if (transactions.length === 0) {
+    return (
+      <Typography variant="h6" css={styles.noTransactionsMessage}>You have no transactions for this month so far</Typography>
+    )
+  }
+
   return (
     <Paper sx={{overflow: 'hidden', background: theme.palette.background.paper, border: `1px solid ${lightMode ? 'black' : 'white' }` }}>
       <FormGroup className="row" style={{margin: "1.5rem"}}>
@@ -283,36 +279,6 @@ const TransactionsTable: React.FC = () => {
             ))}
           </Select>
         </FormControl>
-        {/* <div className="row"style={{marginBottom: "10px"}} >
-          <div className="col-2" />
-          <div className="col-8">
-            <div className="row">
-              <div style={{marginTop: "0.6rem"}} className="col-md-6">
-                <TextField id="outlined-basic" onChange={handleSearchChange} label="Search (Name)" variant="outlined" name="search" />
-              </div>
-              <div style={{marginTop: "0.6rem"}} className="col-md-6">
-                <TextField
-                  id="standard-select-status"
-                  select
-                  label="Sort By"
-                  value={sortBy}
-                  onChange={handleSortingChange}
-                  SelectProps={{
-                    native: true,
-                  }}
-                  variant="outlined"
-                  >
-                  {sortingOptions.map((option) => (
-                    <option key={option.value} value={option.value}>
-                      {option.value}
-                    </option>
-                  ))}
-                </TextField>
-              </div>
-            </div>
-          </div>
-          <div className="col-2" />
-        </div> */}
       </FormGroup>
       <TableContainer sx={{ maxHeight: 440, background: theme.palette.primary.main }}>
         <Table stickyHeader aria-label="sticky table">
